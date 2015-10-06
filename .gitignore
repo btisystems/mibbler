@@ -18,3 +18,5 @@ build
 # intellij
 *.iml
 .idea
+*.ipr
+*.iws
