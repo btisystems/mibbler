@@ -319,10 +319,6 @@ public class MibEntityCompiler extends AbstractMibCompiler {
     private JDefinedClass createRootClass() {
         final JDefinedClass rootClass = createClass(packageName, GeneratedIdentifiers.ROOT_CLASS_NAME);
         rootClass._extends(AbstractRootEntity.class);
-
-        final JAnnotationUse tableNameAnnotation = rootClass.annotate(javax.persistence.Table.class);
-        tableNameAnnotation.param(NAME, GeneratedIdentifiers.ROOT_CLASS_NAME);
-
         return rootClass;
     }
 
