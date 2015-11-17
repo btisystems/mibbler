@@ -19,6 +19,7 @@
         <module>autogen</module>
         <module>rfc</module>
         <module>net-snmp</module>
+        <module>bti7000</module>
     </modules>
     <scm>
         <connection>scm:git:git://github.com/btisystems/mibbler.git</connection>
