@@ -17,9 +17,7 @@
     </licenses>
     <modules>
         <module>autogen</module>
-        <module>samples/rfc</module>
-        <module>samples/net-snmp</module>
-        <module>samples/bti7000</module>
+        <module>samples</module>
     </modules>
     <scm>
         <connection>scm:git:git://github.com/btisystems/mibbler.git</connection>
@@ -116,11 +114,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.6</version>
-                </plugin>
-                <plugin>
-                    <groupId>biz.aQute.bnd</groupId>
-                    <artifactId>bnd-maven-plugin</artifactId>
-                    <version>3.0.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
