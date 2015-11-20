@@ -12,21 +12,10 @@
     <packaging>jar</packaging>
     <name>bti7000</name>
     <description>Provides classes generated from the BTI 7000 MIBs</description>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>com.btisystems.mibbler.mibs</groupId>
             <artifactId>rfc</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.btisystems.mibbler</groupId>
-            <artifactId>autogen</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
@@ -35,56 +24,10 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.4.0</version>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <mainClass>com.btisystems.pronx.ems.App</mainClass>
-                    <arguments>
-                        <argument>-context</argument>
-                        <argument>file:${project.basedir}/src/main/resources/defaultConfiguration.xml</argument>
-                    </arguments>
-                    <systemProperties>
-                        <systemProperty>
-                            <key>project.basedir</key>
-                            <value>${project.basedir}</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <key>log4j.configurationFile</key>
-                            <value>file:${project.basedir}/src/main/resources/log4j2.xml</value>
-                        </systemProperty>
-                    </systemProperties>
-                </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>2.6.1</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>src/main/java</directory>
-                            <includes>
-                                <include>**/*</include>
-                            </includes>
-                        </fileset>
-                        <fileset>
-                            <directory>src/main/resources/META-INF</directory>
-                            <includes>
-                                <include>*</include>
-                            </includes>
-                            <excludes>
-                                <exclude>.svn</exclude>
-                            </excludes>
-                        </fileset>
-                    </filesets>
-                </configuration>
             </plugin>
         </plugins>
     </build>
