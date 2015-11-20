@@ -8,6 +8,7 @@
     </parent>
     <groupId>com.btisystems.mibbler.mibs</groupId>
     <artifactId>bti7000</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>bti7000</name>
     <description>Provides classes generated from the BTI 7000 MIBs</description>

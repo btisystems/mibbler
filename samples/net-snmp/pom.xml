@@ -8,6 +8,7 @@
     </parent>
     <groupId>com.btisystems.mibbler.mibs</groupId>
     <artifactId>net-snmp</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>net-snmp</name>
     <description>Provides an example of how to use Mibbler to generate a jar for the SNMP Mibs used by net-snmp.</description>
