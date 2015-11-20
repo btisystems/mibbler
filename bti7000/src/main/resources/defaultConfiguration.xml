@@ -56,7 +56,7 @@
                 </property>
             </bean>
         </property>
-        <property name="packageName" value="com.btisystems.management.mibs.bti7000" />
+        <property name="packageName" value="com.btisystems.mibbler.mibs.bti7000" />
         <property name="interfacePackageName" value="interfaces" />
     </bean>
 
