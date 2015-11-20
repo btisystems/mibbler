@@ -67,6 +67,13 @@
             <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:./repo</url>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <!--     <plugin>

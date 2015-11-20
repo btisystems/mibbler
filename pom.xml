@@ -61,11 +61,6 @@
     </dependencyManagement>
     <repositories>
         <repository>
-            <id>project.local</id>
-            <name>project</name>
-            <url>file:./repo</url>
-        </repository>
-        <repository>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
