@@ -22,7 +22,6 @@
 
 package com.btisystems.pronx.ems;
 
-import com.btisystems.pronx.ems.core.model.GeneratedIdentifiers;
 import com.btisystems.pronx.ems.model.DeviceGroup;
 import com.btisystems.pronx.ems.model.MibCommon;
 import com.btisystems.pronx.ems.model.MibInput;
@@ -30,6 +29,8 @@ import com.btisystems.pronx.ems.model.MibSource;
 import com.btisystems.pronx.ems.schemas.meta.notification.NotificationMeta;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
 import net.percederberg.mibble.Mib;
 import net.percederberg.mibble.MibLoader;
 import net.percederberg.mibble.MibLoaderException;
@@ -48,12 +49,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -76,6 +76,7 @@ public class App {
 
     private static final JCodeModel codeModel = new JCodeModel();
     public static final String CONTEXT = "context";
+    private static final String FILE_SEP = File.separator;
 
     private static Properties properties;
 
@@ -107,7 +108,14 @@ public class App {
                 processCommonMibs();
 
                 processMibFiles(groupList);
+                
                 buildSourceFiles();
+                
+                for (final String importedPackage : MibEntityCompiler.IMPORTED_PACKAGES) {
+                    LOG.debug("Deleting: {}", properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP));
+                    FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP)));
+                }
+               
             }
         }
         LOG.info("Autogen complete");
@@ -235,14 +243,15 @@ public class App {
     }
 
     private static void saveNotificationRegistry(final String packageName, final NotificationMeta meta) {
-        JAXBContext context;
-        try {
-            context = JAXBContext.newInstance(GeneratedIdentifiers.NOTIFICATION_METADATA_CONTEXT_PATH);
-
-            final Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            marshaller.marshal(meta, getNotificationRegistryDocumentName(packageName));
-        } catch (final JAXBException e) {
+        final File notificationRegistryDoc = getNotificationRegistryDocumentName(packageName);
+        final File notificationRegistryDir = notificationRegistryDoc.getParentFile();
+        if (Files.notExists(notificationRegistryDir.toPath())) {
+            notificationRegistryDir.mkdir();
+        }
+        try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(notificationRegistryDoc)))) {
+            encoder.writeObject(meta);
+            encoder.writeObject(meta);
+        } catch (final Exception e) {
             LOG.error("Exception saving Notification Registry: {}", e.getMessage(), e);
         }
     }

@@ -29,7 +29,8 @@ import com.btisystems.pronx.ems.core.model.IDeviceEntity;
 import com.btisystems.pronx.ems.core.model.IIndexed;
 import com.btisystems.pronx.ems.core.model.ITableAccess;
 import com.btisystems.pronx.ems.core.model.IVariableBindingSetter;
-import com.sun.codemodel.JAnnotationUse;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
 import com.sun.codemodel.JArray;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JCase;
@@ -65,9 +66,11 @@ import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -91,6 +94,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
     private final Map<String, List<MibValueSymbol>> rootSymbolMap;
     private final Map<String, JDefinedClass> oidClasses = new TreeMap<>();
     private final Map<String, JDefinedClass> interfaceMap;
+    public static final Set<String> IMPORTED_PACKAGES = new HashSet<>();
 
     /**
      * Maintains an occurrence count for each unqualified class name.
@@ -223,6 +227,8 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         final JDefinedClass rootClass = createRootClass();
         final Map<String, JFieldVar> oidRootFieldMap = new HashMap<>();
 
+        importDependencies();
+        
         for (final Entry<String, JDefinedClass> classEntry : classes.entrySet()) {
 
             final JDefinedClass topLevelClass = classEntry.getValue();
@@ -240,7 +246,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
                 generateAccessors(rootClass, rootField.type(), fieldName, -1);
             }
         }
-
+        
         addStandardMethods(rootClass);
 
         generateGetRootsMethod(rootClass, oidRootFieldMap);
@@ -265,7 +271,6 @@ public class MibEntityCompiler extends AbstractMibCompiler {
      * Generate class with map, mapping OIDs to classes.
      */
     private  void generateClassRegistry() {
-
         final JDefinedClass registryClass = createClass(packageName, GeneratedIdentifiers.OID_REGISTRY_CLASSNAME);
 
         // Create TreeMap, initialised by call to static function.
@@ -294,9 +299,43 @@ public class MibEntityCompiler extends AbstractMibCompiler {
             putInvocation.arg(newInvocation);
             putInvocation.arg(entry.getValue().dotclass());
         }
-
+        
         // Return the map.
         initMethod.body()._return(JExpr.ref("map"));
+        
+    }
+    
+    private void importDependencies(){
+        try {
+            final ImmutableSet<ClassPath.ClassInfo> classes = ClassPath.from(this.getClass().getClassLoader()).getAllClasses();
+            for (ClassPath.ClassInfo clazz : classes) {
+                if (clazz.getSimpleName().equals(GeneratedIdentifiers.OID_REGISTRY_CLASSNAME)){
+                    LOG.info("Adding OIDs from registry: {}", clazz.getName());
+                    final Class loadedClass = this.getClass().getClassLoader().loadClass(clazz.getName());
+                    final Field field = loadedClass.getDeclaredField("oidRegistry");
+                    final TreeMap<OID, Class<? extends DeviceEntity>> map = 
+                            (TreeMap<OID, Class<? extends DeviceEntity>>) field.get(null);
+                    for (Entry<OID, Class<? extends DeviceEntity>> entry : map.entrySet()) {
+                        if (!oidClasses.containsKey(entry.getKey().toString())){
+                            final String fullClassName = getFullClassName(entry.getValue().getPackage().getName(), entry.getValue().getSimpleName());
+                            if (codeModel._getClass(fullClassName) == null){
+                                final JDefinedClass importedClass = createClass(entry.getValue().getPackage().getName(), entry.getValue().getSimpleName());
+                                final ClassMetadata metadata = new ClassMetadata(importedClass);
+                                final boolean isTableRow = IIndexed.class.isAssignableFrom(entry.getValue());
+                                metadata.setTableRow(isTableRow);
+                                importedClass.metadata = metadata;
+                                oidClasses.put(entry.getKey().toString(), importedClass);
+                                IMPORTED_PACKAGES.add(entry.getValue().getPackage().getName());
+                            } else {
+                                oidClasses.put(entry.getKey().toString(), codeModel._getClass(fullClassName));
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) { 
+            LOG.error("Exception adding classpath OIDS.", ex);
+        }
     }
 
     private  void generateGetRootsMethod(final JDefinedClass rootClass, final Map<String, JFieldVar> oidRootFieldMap) {
