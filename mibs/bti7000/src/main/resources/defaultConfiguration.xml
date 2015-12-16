@@ -65,8 +65,7 @@
             <bean class="org.springframework.beans.factory.config.ListFactoryBean">
                 <property name="sourceList">
                     <list>
-                        <value>${project.basedir}/src/main/resources/mibs/bti7000/13.2.0</value>
-                        <value>${project.basedir}/src/main/resources/mibs/rfc</value>
+                        <value>${project.basedir}/src/main/resources/mibs/7000/13.2.0</value>
                     </list>
                 </property>
             </bean>
@@ -76,22 +75,13 @@
         <property name="defaultSourceDirectories" ref="commonSourceDirectoryList" />
         <property name="rootObjects" ref="RootObjectList7000" />
         <property name="excludedRootObjects" ref="ExcludedRootObjectList7000"/>
-        <property name="commonNameList">
-            <bean class="org.springframework.beans.factory.config.ListFactoryBean">
-                <property name="sourceList">
-                    <list>
-                        <!--<value>MIB2</value>-->
-                    </list>
-                </property>
-            </bean>
-        </property>
     </bean>
 
     <bean id="commonSourceDirectoryList"
         class="org.springframework.beans.factory.config.ListFactoryBean">
         <property name="sourceList">
             <list>
-                <value>${project.basedir}/src/main/resources/mibs/rfc</value>
+                <!--<value>${project.basedir}/src/main/resources/mibs/rfc</value>-->
             </list>
         </property>
     </bean>
@@ -105,7 +95,17 @@
             </list>
         </property>
     </bean>
-
+    
+    <bean id="RootObjectList2060"
+        class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <value>1.3.6.1.2.1</value>
+                <value>1.3.6.1.4.1.18070</value>
+            </list>
+        </property>
+    </bean>
+    
     <bean id="ExcludedRootObjectList7000"
         class="org.springframework.beans.factory.config.SetFactoryBean">
         <property name="sourceSet">
@@ -116,10 +116,26 @@
                 <value>1.3.6.1.4.1.18070.2.2.2.5.2</value> <!-- eventNotifCtrl -->
                 <value>1.3.6.1.4.1.18070.2.2.7000</value>  <!--  Debug -->
 		<!-- Note: The following branches are needed for PM partial discoveries but not full-walk discoveries -->
-                <value>1.3.6.1.4.1.18070.2.2.1.8.3</value> <!-- TlLogTable -->
-                <value>1.3.6.1.4.1.18070.2.2.1.6</value> <!-- Performance Monitoring Tables -->
-                <value>1.3.6.1.4.1.18070.2.2.1.16.12</value> <!-- OL Performance Monitoring Tables -->
+<!--                <value>1.3.6.1.4.1.18070.2.2.1.8.3</value>  TlLogTable 
+                <value>1.3.6.1.4.1.18070.2.2.1.6</value>  Performance Monitoring Tables 
+                <value>1.3.6.1.4.1.18070.2.2.1.16.12</value>  OL Performance Monitoring Tables -->
             </list>
         </property>
     </bean>
+    
+    <bean id="ExcludedRootObjectList2060"
+        class="org.springframework.beans.factory.config.SetFactoryBean">
+        <property name="sourceSet">
+            <list>
+                <!--<value>1.3.6.1.4.1.18070.2.2.1.8.3</value>  TlLogTable -->
+                <value>1.3.6.1.4.1.18070.2.2.1.6</value> <!--  Performance Monitoring Tables -->
+                <value>1.3.6.1.4.1.18070.2.2.1.14.1.5</value> <!--  FDB Table -->
+                <value>1.3.6.1.4.1.18070.2.2.2.5.1.1</value> <!-- condNotifCtrlTable (to avoid bug on node pre 8.2.1) -->
+                <value>1.3.6.1.4.1.18070.2.2.2.5.1.2</value> <!-- envCondAttrTable (to avoid bug on node pre 8.2.1) -->
+                <value>1.3.6.1.4.1.18070.2.2.2.5.2</value> <!-- eventNotifCtrl (to avoid bug on node pre 8.2.1) -->
+                <value>1.3.6.1.4.1.18070.2.2.7000</value>  <!--  Debug -->
+            </list>
+        </property>
+    </bean>
+
 </beans>
