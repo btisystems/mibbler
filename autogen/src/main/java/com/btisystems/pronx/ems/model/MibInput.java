@@ -72,7 +72,7 @@ public abstract class MibInput implements InitializingBean {
      *
      * @param rootObjects the root objects
      */
-    @Required
+//    @Required
     public final void setRootObjects(final List<String> rootObjects) {
         this.rootObjects = rootObjects;
     }
@@ -82,7 +82,7 @@ public abstract class MibInput implements InitializingBean {
      *
      * @param packageName the package name
      */
-    @Required
+//    @Required
     public final void setPackageName(final String packageName) {
         this.packageName = packageName;
     }
