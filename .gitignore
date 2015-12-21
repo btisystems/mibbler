@@ -27,6 +27,8 @@ target
 samples/rfc/src/main/java
 samples/net-snmp/src/main/java
 samples/bti7000/src/main/java
-/mibs/bti7000/src/main/java/
-/mibs/rfc/src/main/java/
-/mibs/net-snmp/src/main/java/
+
+mibs/**/src/main/java
+helloworld/src/main/java
+**/META-INF
+

@@ -19,9 +19,9 @@
  *
  * $Id$
  */
-
 package com.btisystems.pronx.ems.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -187,17 +187,20 @@ public abstract class MibInput implements InitializingBean {
 
     /**
      * Loads the Source Filenames from a Directory List.
+     *
      * @return list of filenames
      */
     private List<String> loadSourceFilenamesFromDirectoryList() {
         final List<String> filenames = new ArrayList<>();
         for (final String sourceDirectory : directoryNameList) {
             final File directory = new File(sourceDirectory);
-            for (final File file : directory.listFiles()) {
+            final File[] listFiles = checkNotNull(
+                    directory.listFiles(),
+                    "Invalid source directory=" + sourceDirectory);
+            for (final File file : listFiles) {
                 filenames.add(file.getPath());
             }
         }
         return filenames;
     }
 }
-
