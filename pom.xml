@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.btisystems</groupId>
     <artifactId>mibbler</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>mibbler</name>
     <description>A utility for generating Java representations of entities described in SNMP MIB files</description>

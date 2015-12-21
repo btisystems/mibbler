@@ -105,7 +105,7 @@ public class App {
             final List<DeviceGroup> groupList = (List<DeviceGroup>) autogenContext.getBean("groupList");
             if (groupList != null) {
 
-                processCommonMibs();
+//                processCommonMibs();
 
                 processMibFiles(groupList);
                 
@@ -226,16 +226,30 @@ public class App {
         final List<MibValueSymbol> rootSymbols = locateRootSymbols(loader, source.getRootObjects());
         final Map<String, List<MibValueSymbol>> symbolMap = locateChildSymbols(rootSymbols, source.getExcludedRootObjects());
 
-        removeCommonSymbols(source, symbolMap);
+//        removeCommonSymbols(source, symbolMap);
 
-        final MibEntityCompiler compiler = new MibEntityCompiler(symbolMap, packageName, interfaceMap);
+        final MibEntityCompiler compiler = new MibEntityCompiler(symbolMap, packageName, interfaceMap, codeModel);
+        
+        compiler.importDependencies();
+        
+        for (List<MibValueSymbol> symbolList : symbolMap.values()) {
+            final Iterator<MibValueSymbol> iterator = symbolList.iterator();
+            while (iterator.hasNext()) {
+                final MibValueSymbol symbol = iterator.next();
+                if (MibEntityCompiler.IMPORTED_SYMBOLS.contains(getOidFromSymbol(symbol))) {
+                    LOG.debug("removing common symbol:{}", getOidFromSymbol(symbol));
+                    iterator.remove();
+                }
+            }
+        }
+        
         compiler.compile(codeModel);
 
         compileNotifications(loader, packageName, source.isGenerateNotificationObjects());
 
         final Map<String, JDefinedClass> classes = compiler.getEntityClasses();
 
-//        addCommonSymbols(source, classes);
+//        addCommnSymbols(source, classes);
 
         return compiler.generateRootEntity(classes);
     }

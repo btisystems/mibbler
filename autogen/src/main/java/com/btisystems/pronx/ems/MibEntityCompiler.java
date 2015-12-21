@@ -95,6 +95,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
     private final Map<String, JDefinedClass> oidClasses = new TreeMap<>();
     private final Map<String, JDefinedClass> interfaceMap;
     public static final Set<String> IMPORTED_PACKAGES = new HashSet<>();
+    public static final Set<String> IMPORTED_SYMBOLS = new HashSet<>();
 
     /**
      * Maintains an occurrence count for each unqualified class name.
@@ -115,6 +116,15 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         super(packageName);
         this.rootSymbolMap = symbolMap;
         this.interfaceMap = interfaceMap;
+    }
+    
+    public MibEntityCompiler(final Map<String, List<MibValueSymbol>> symbolMap,
+                       final String packageName,
+                       final Map<String, JDefinedClass> interfaceMap, 
+                       final JCodeModel codeModel) {
+        this(symbolMap, packageName, interfaceMap);
+        this.codeModel = codeModel;
+        
     }
 
     /**
@@ -227,7 +237,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         final JDefinedClass rootClass = createRootClass();
         final Map<String, JFieldVar> oidRootFieldMap = new HashMap<>();
 
-        importDependencies();
+//        importDependencies();
         
         for (final Entry<String, JDefinedClass> classEntry : classes.entrySet()) {
 
@@ -305,7 +315,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         
     }
     
-    private void importDependencies(){
+    public void importDependencies(){
         try {
             final ImmutableSet<ClassPath.ClassInfo> classes = ClassPath.from(this.getClass().getClassLoader()).getAllClasses();
             for (ClassPath.ClassInfo clazz : classes) {
@@ -326,6 +336,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
                                 importedClass.metadata = metadata;
                                 oidClasses.put(entry.getKey().toString(), importedClass);
                                 IMPORTED_PACKAGES.add(entry.getValue().getPackage().getName());
+                                IMPORTED_SYMBOLS.add(entry.getKey().toString());
                             } else {
                                 oidClasses.put(entry.getKey().toString(), codeModel._getClass(fullClassName));
                             }
