@@ -84,19 +84,9 @@
                 </property>
             </bean>
         </property>
-        <!-- <property name="defaultSourceDirectories" ref="commonSourceDirectoryList" /> -->
         <property name="packageName" value="netsnmp"></property>
         <property name="schemaName" value="netsnmp"></property>
         <property name="rootObjects" ref="RootObjectListNetSnmp" />
-        <property name="commonNameList">
-            <bean class="org.springframework.beans.factory.config.ListFactoryBean">
-                <property name="sourceList">
-                    <list>
-                        <value>MIB2</value>
-                    </list>
-                </property>
-            </bean>
-        </property>
     </bean>
 
     <bean id="RootObjectListNetSnmp"
