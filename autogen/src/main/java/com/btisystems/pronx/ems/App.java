@@ -111,23 +111,25 @@ public class App {
                 
                 buildSourceFiles();
                 
-                for (final String importedPackage : MibEntityCompiler.IMPORTED_PACKAGES) {
-                    LOG.debug("Deleting: {}", properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP));
-                    FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP)));
-                }
-                for (Entry<String, Map<String, JDefinedClass>> entrySet : commonClassMap.entrySet()) {
-                    for (JDefinedClass value : entrySet.getValue().values()) {
-                        String _package = value._package().name();
-                        LOG.debug("Deleting: {}", properties.getProperty("target-directory") + FILE_SEP + _package.replaceAll("\\.", FILE_SEP));
-                        FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP + _package.replaceAll("\\.", FILE_SEP)));
-                
-                    }
-                            
-                }
-               
+                deleteImportedSource();
             }
         }
         LOG.info("Autogen complete");
+    }
+
+    private static void deleteImportedSource() throws IOException {
+        for (final String importedPackage : MibEntityCompiler.IMPORTED_PACKAGES) {
+            LOG.debug("Deleting: {}", properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP));
+            FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP)));
+        }
+        for (Entry<String, Map<String, JDefinedClass>> entrySet : commonClassMap.entrySet()) {
+            for (JDefinedClass value : entrySet.getValue().values()) {
+                String _package = value._package().name();
+                LOG.debug("Deleting: {}", properties.getProperty("target-directory") + FILE_SEP + _package.replaceAll("\\.", FILE_SEP));
+                FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP + _package.replaceAll("\\.", FILE_SEP)));
+                
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
