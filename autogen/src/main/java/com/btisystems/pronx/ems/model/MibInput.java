@@ -24,7 +24,6 @@ package com.btisystems.pronx.ems.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public abstract class MibInput implements InitializingBean {
     /**
      * The name of the directories containing the source files.
      */
-    private List<String> directoryNameList;
+    private List<String> sourceDirectoryList;
 
     /**
      * The name of the java package to which generated classes are to belong.
@@ -102,7 +101,11 @@ public abstract class MibInput implements InitializingBean {
      * @param directoryNameList the directory name list
      */
     public final void setSourceDirectoryList(final List<String> directoryNameList) {
-        this.directoryNameList = directoryNameList;
+        this.sourceDirectoryList = directoryNameList;
+    }
+
+    public List<String> getSourceDirectoryList() {
+        return sourceDirectoryList;
     }
 
     /**
@@ -127,7 +130,7 @@ public abstract class MibInput implements InitializingBean {
     public final void afterPropertiesSet() throws Exception {
 
         // Check that source files have been defined in exactly one way.
-        if (directoryNameList != null) {
+        if (sourceDirectoryList != null) {
             if (sourceFilenames != null) {
                 throw new BeanInitializationException("Cannot set both sourceFilenames and directoryName properties");
             }
@@ -192,7 +195,7 @@ public abstract class MibInput implements InitializingBean {
      */
     private List<String> loadSourceFilenamesFromDirectoryList() {
         final List<String> filenames = new ArrayList<>();
-        for (final String sourceDirectory : directoryNameList) {
+        for (final String sourceDirectory : sourceDirectoryList) {
             final File directory = new File(sourceDirectory);
             final File[] listFiles = checkNotNull(
                     directory.listFiles(),

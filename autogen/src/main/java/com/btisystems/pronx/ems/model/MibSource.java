@@ -41,9 +41,13 @@ public class MibSource extends MibInput {
      */
     private List<String> commonNameList;
 
+    public MibSource() {
+    }
+
     /**
      * Whether the tool should generate Notification objects or not.
      */
+
     private boolean generateNotificationObjects;
 
     /**

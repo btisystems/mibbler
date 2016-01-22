@@ -32,6 +32,9 @@ public class MibCommon extends MibInput {
 
     private String name;
 
+    public MibCommon() {
+    }
+
     /**
      * Sets name.
      *
