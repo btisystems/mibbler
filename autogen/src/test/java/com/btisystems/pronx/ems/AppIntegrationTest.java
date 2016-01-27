@@ -1,5 +1,6 @@
 package com.btisystems.pronx.ems;
 
+import junitx.framework.ComparisonFailure;
 import junitx.framework.FileAssert;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -7,7 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 public class AppIntegrationTest {
@@ -40,8 +44,36 @@ public class AppIntegrationTest {
         Collection<File> files = FileUtils.listFiles(new File(GENERATED_DIRECTORY), new String[]{"java", "xml"}, true);
 
         for (final File file : files){
-            FileAssert.assertEquals(new File(file.getCanonicalPath().replaceFirst("generated", "baseline")), file);
+            try {
+                if (file.getCanonicalPath().endsWith("xml")) {
+                    trimNotificationMeta(file);
+                }
+
+                FileAssert.assertEquals(new File(file.getCanonicalPath().replaceFirst("generated", "baseline")), file);
+
+            } catch (ComparisonFailure fail){
+                System.out.println("Failure when comparing: " + file.getCanonicalPath());
+                throw fail;
+            }
         }
+    }
+
+    /**
+     * Strips out the Java version from the notification meta data. This isn't needed
+     * when diffing the contents.
+     *
+     * @param file
+     * @throws IOException
+     */
+    private void trimNotificationMeta(File file) throws IOException {
+        List<String> lines = FileUtils.readLines(file);
+        List<String> updatedLines = new ArrayList<>();
+        for (final String line : lines){
+            if (!line.startsWith("<java version=")){
+                updatedLines.add(line);
+            }
+        }
+        FileUtils.writeLines(file, updatedLines, false);
     }
 
 }
