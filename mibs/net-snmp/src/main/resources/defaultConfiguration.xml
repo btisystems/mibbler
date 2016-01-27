@@ -29,30 +29,12 @@
         </property>
     </bean>
 
-    <bean id="commonList"
-        class="org.springframework.beans.factory.config.ListFactoryBean">
-        <property name="sourceList">
-            <list>
-                <!--<ref bean="mib2_common" />-->
-            </list>
-        </property>
-    </bean>
-
     
     <bean id="groupList"
         class="org.springframework.beans.factory.config.ListFactoryBean">
         <property name="sourceList">
             <list>
                 <ref bean="netsnmp-group" />
-            </list>
-        </property>
-    </bean>
-
-    <bean id="commonSourceDirectoryList"
-        class="org.springframework.beans.factory.config.ListFactoryBean">
-        <property name="sourceList">
-            <list>
-                <value>${project.basedir}/src/main/resources/mibs/rfc</value>
             </list>
         </property>
     </bean>

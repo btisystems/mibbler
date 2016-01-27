@@ -82,8 +82,6 @@ public class App {
 
     private static ApplicationContext autogenContext;
 
-    private static final Map<String, Map<String, JDefinedClass>> commonClassMap = new HashMap<>();
-
     /**
      * Entrypoint method.
      *
@@ -105,8 +103,6 @@ public class App {
             final List<DeviceGroup> groupList = (List<DeviceGroup>) autogenContext.getBean("groupList");
             if (groupList != null) {
 
-//                processCommonMibs();
-
                 processMibFiles(groupList);
                 
                 buildSourceFiles();
@@ -121,22 +117,6 @@ public class App {
         for (final String importedPackage : MibEntityCompiler.IMPORTED_PACKAGES) {
             LOG.debug("Deleting: {}", properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP));
             FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP)));
-        }
-        for (Entry<String, Map<String, JDefinedClass>> entrySet : commonClassMap.entrySet()) {
-            for (JDefinedClass value : entrySet.getValue().values()) {
-                String _package = value._package().name();
-                LOG.debug("Deleting: {}", properties.getProperty("target-directory") + FILE_SEP + _package.replaceAll("\\.", FILE_SEP));
-                FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP + _package.replaceAll("\\.", FILE_SEP)));
-                
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static void processCommonMibs() {
-        final List<MibCommon> commonSources = (List<MibCommon>) autogenContext.getBean("commonList");
-        if (commonSources != null) {
-            processCommonMibs(commonSources);
         }
     }
 
@@ -228,8 +208,6 @@ public class App {
         final List<MibValueSymbol> rootSymbols = locateRootSymbols(loader, source.getRootObjects());
         final Map<String, List<MibValueSymbol>> symbolMap = locateChildSymbols(rootSymbols, source.getExcludedRootObjects());
 
-//        removeCommonSymbols(source, symbolMap);
-
         final MibEntityCompiler compiler = new MibEntityCompiler(symbolMap, packageName, interfaceMap, codeModel);
         
         compiler.importDependencies();
@@ -251,8 +229,6 @@ public class App {
 
         final Map<String, JDefinedClass> classes = compiler.getEntityClasses();
 
-//        addCommnSymbols(source, classes);
-
         return compiler.generateRootEntity(classes);
     }
 
@@ -271,7 +247,7 @@ public class App {
         final File notificationRegistryDoc = getNotificationRegistryDocumentName(packageName);
         final File notificationRegistryDir = notificationRegistryDoc.getParentFile();
         if (Files.notExists(notificationRegistryDir.toPath())) {
-            notificationRegistryDir.mkdir();
+            notificationRegistryDir.mkdirs();
         }
         try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(notificationRegistryDoc)))) {
             encoder.writeObject(meta);
@@ -283,41 +259,6 @@ public class App {
 
     private static File getNotificationRegistryDocumentName(final String packageName) {
         return new File(properties.getProperty("target-registry-directory"), packageName + ".xml");
-    }
-
-    private static void addCommonSymbols(final MibSource source, final Map<String, JDefinedClass> classes) {
-        final List<String> commonList = source.getCommonNameList();
-        if (commonList != null) {
-            for (final String commonName : commonList) {
-                final Map<String, JDefinedClass> commonMap = commonClassMap.get(commonName);
-                if (commonMap != null) {
-                    classes.putAll(commonMap);
-                }
-            }
-        }
-    }
-
-    private static void removeCommonSymbols(final MibSource source, final Map<String, List<MibValueSymbol>> symbolMap) {
-        final List<String> commonList = source.getCommonNameList();
-        if (commonList != null) {
-            for (final String commonName : commonList) {
-                final Map<String, JDefinedClass> commonMap = commonClassMap.get(commonName);
-                if (commonMap != null) {
-                    for (final List<MibValueSymbol> symbolList : symbolMap.values()) {
-                        final Iterator<MibValueSymbol> iterator = symbolList.iterator();
-                        while (iterator.hasNext()) {
-                            final MibValueSymbol symbol = iterator.next();
-                            if (commonMap.containsKey(getOidFromSymbol(symbol))) {
-                                LOG.debug("removing common symbol:{}", getOidFromSymbol(symbol));
-                                iterator.remove();
-                            }
-                        }
-                    }
-                } else {
-                    LOG.error("Unrecognised common name:{}", commonName);
-                }
-            }
-        }
     }
 
     private static void registerEntities(final Map<String, Map <String, List<MibValueSymbol>>> groupEntities,
@@ -372,7 +313,6 @@ public class App {
             App.loadMibs(loader, sourceFiles);
 
             final Map<String, List<MibValueSymbol>> symbolMap = getCompilableEntitySymbols(loader, source);
-            removeCommonSymbols(source, symbolMap);
 
             registerEntities(groupRootOidMap, symbolMap);
         }
@@ -466,7 +406,7 @@ public class App {
         return false;
     }
 
-    private static boolean areEntitiesEquivalent(final MibValueSymbol symbol1, final MibValueSymbol symbol2) {
+    protected static boolean areEntitiesEquivalent(final MibValueSymbol symbol1, final MibValueSymbol symbol2) {
         LOG.debug(">>> areEntitiesEquivalent {} {}", symbol1, symbol2);
         if (!symbol1.getValue().equals(symbol2.getValue())) {
             LOG.debug("value: {} {}", symbol1.getValue(), symbol2.getValue());
@@ -520,31 +460,6 @@ public class App {
         }
 
         return true;
-    }
-
-
-    /**
-     * Load and process each of the Common Mib files.
-     * @param sources common Mibs
-     */
-    private static void processCommonMibs(final List<MibCommon> sources) {
-
-        for (final MibCommon source : sources) {
-            LOG.debug("process common:{}", source.getName());
-            final List<String> sourceNames = source.getSourceFilenames();
-
-            final List<File> sourceFiles = getFiles(sourceNames);
-
-            final MibLoader loader = new MibLoader();
-            addDefaultDirectories(loader, source.getDefaultSourceDirectories());
-
-            if (App.loadMibs(loader, sourceFiles)) {
-                final Map<String, JDefinedClass> commonSet = App.compileCommonMibs(loader, source);
-                commonClassMap.put(source.getName(), commonSet);
-            }
-
-            loader.unloadAll();
-        }
     }
 
     private static List<MibValueSymbol> locateRootSymbols(final MibLoader loader, final List<String> rootObjects) {
@@ -625,23 +540,6 @@ public class App {
             final MibInput source) {
         final List<MibValueSymbol> rootSymbols = locateRootSymbols(loader, source.getRootObjects());
         return locateChildSymbols(rootSymbols, source.getExcludedRootObjects());
-    }
-
-    /**
-     * Load mibs from list of source files.
-     * @param loader
-     * @param source
-     * @return
-     */
-    private static Map<String, JDefinedClass> compileCommonMibs(final MibLoader loader,
-                               final MibCommon source) {
-
-        final Map<String, List<MibValueSymbol>> symbolMap = getCompilableEntitySymbols(loader, source);
-
-        final MibEntityCompiler compiler = new MibEntityCompiler(symbolMap, source.getPackageName());
-        compiler.compile(codeModel);
-
-        return compiler.getEntityClasses();
     }
 
     private static Map<String, List<MibValueSymbol>> locateChildSymbols(final List<MibValueSymbol> rootSymbols,

@@ -24,16 +24,6 @@
             </props>
         </property>
     </bean>
-
-    <bean id="commonList"
-        class="org.springframework.beans.factory.config.ListFactoryBean">
-        <property name="sourceList">
-            <list>
-                <!--<ref bean="mib2_common" />-->
-            </list>
-        </property>
-    </bean>
-
     
     <bean id="groupList"
         class="org.springframework.beans.factory.config.ListFactoryBean">
@@ -72,19 +62,10 @@
         </property>
         <property name="packageName" value="bti7000_13_2_0"></property>
         <property name="schemaName" value="bti7000_13_2_0"></property>
-        <property name="defaultSourceDirectories" ref="commonSourceDirectoryList" />
         <property name="rootObjects" ref="RootObjectList7000" />
         <property name="excludedRootObjects" ref="ExcludedRootObjectList7000"/>
     </bean>
 
-    <bean id="commonSourceDirectoryList"
-        class="org.springframework.beans.factory.config.ListFactoryBean">
-        <property name="sourceList">
-            <list>
-                <!--<value>${project.basedir}/src/main/resources/mibs/rfc</value>-->
-            </list>
-        </property>
-    </bean>
     
     <bean id="RootObjectList7000"
         class="org.springframework.beans.factory.config.ListFactoryBean">
