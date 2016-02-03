@@ -25,29 +25,11 @@
         </property>
     </bean>
 
-    <bean id="commonList"
-          class="org.springframework.beans.factory.config.ListFactoryBean">
-        <property name="sourceList">
-            <list>
-                <!--<ref bean="mib2_common" />-->
-            </list>
-        </property>
-    </bean>
-
     <bean id="groupList"
           class="org.springframework.beans.factory.config.ListFactoryBean">
         <property name="sourceList">
             <list>
                 <ref bean="RFC1155-group" />
-            </list>
-        </property>
-    </bean>
-
-    <bean id="commonSourceDirectoryList"
-          class="org.springframework.beans.factory.config.ListFactoryBean">
-        <property name="sourceList">
-            <list>
-                <value>${project.basedir}/src/main/resources/mibs</value>
             </list>
         </property>
     </bean>
@@ -81,15 +63,6 @@
         <property name="packageName" value="RFC1155"></property>
         <property name="schemaName" value="RFC1155"></property>
         <property name="rootObjects" ref="RootObjectListRFC1155" />
-        <property name="commonNameList">
-            <bean class="org.springframework.beans.factory.config.ListFactoryBean">
-                <property name="sourceList">
-                    <list>
-                        <!--<value>MIB2</value>-->
-                    </list>
-                </property>
-            </bean>
-        </property>
     </bean>
 
     <bean id="RootObjectListRFC1155"
