@@ -19,6 +19,7 @@ public class AppIntegrationTest {
 
     public static final String GENERATED_DIRECTORY = "./src/test/generated";
     private App app;
+    private boolean failed = false;
 
     @Before
     public void setUp() throws Exception {
@@ -29,7 +30,9 @@ public class AppIntegrationTest {
 
     @After
     public void after() throws Exception {
-        FileUtils.deleteDirectory(new File(GENERATED_DIRECTORY));
+        if (!failed) {
+            FileUtils.deleteDirectory(new File(GENERATED_DIRECTORY));
+        }
     }
 
     /**
@@ -53,6 +56,7 @@ public class AppIntegrationTest {
 
             } catch (ComparisonFailure fail){
                 System.out.println("Failure when comparing: " + file.getCanonicalPath());
+                failed = true;
                 throw fail;
             }
         }
