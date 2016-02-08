@@ -19,7 +19,7 @@
         </snapshotRepository>
     </distributionManagement>
     <properties>
-        <mibble.version>2.9.2</mibble.version>
+        <mibble.version>2.9.3</mibble.version>
     </properties>
     <dependencies>
         <dependency>

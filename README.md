@@ -12,8 +12,12 @@ on this jar can be found at [snmp-core](https://github.com/btisystems/snmp-core)
 ## Mibble Jar
 Mibble is currently not available through a Maven Repository, therefore i've created a local repository and installed the jar on the filesystem.
 
-     $ mvn deploy:deploy-file -Durl=file:/repo -Dfile=mibble-parser-2.9.2.jar -DgroupId=net.percederberg -DartifactId=mibble-parser -Dpackaging=jar -Dversion=2.9.2
+     $ mvn deploy:deploy-file -Durl=file:./repo -Dfile=mibble-parser-2.9.2.jar -DgroupId=net.percederberg -DartifactId=mibble-parser -Dpackaging=jar -Dversion=2.9.2
      
+
+
+## Version updates
+Remember to update the mib pom's exec plugin version of autogen when autogen releases a new version.
 
 ## License
 The utility itself uses the brilliant SNMP Mib Parser, [Mibble](https://github.com/cederberg/mibble) contributed by Per Cederberg.

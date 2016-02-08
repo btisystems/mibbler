@@ -61,7 +61,29 @@
             <name>oss-sonatype</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>codehaus-snapshots</id>
+            <url>whatever</url>
+        </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>codehaus-snapshots</id>
+            <url>whatever</url>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <pluginManagement>
             <plugins>
