@@ -1,0 +1,1335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationMeta" id="NotificationMeta0">
+  <void property="fieldList">
+   <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldList" id="FieldList0">
+    <void property="fieldDescription">
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription0">
+       <void property="description">
+        <string>The name of the trigger causing the notification.</string>
+       </void>
+       <void property="name">
+        <string>mteHotTrigger</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.1.1</string>
+       </void>
+       <void property="type">
+        <object class="java.lang.Enum" id="FieldType0" method="valueOf">
+         <class>com.btisystems.pronx.ems.schemas.meta.notification.FieldType</class>
+         <string>STRING</string>
+        </object>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription1">
+       <void property="description">
+        <string>The SNMP Target MIB&apos;s snmpTargetAddrName related to the
+notification.</string>
+       </void>
+       <void property="name">
+        <string>mteHotTargetName</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.1.2</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription2">
+       <void property="description">
+        <string>The context name related to the notification.  This MUST be as
+fully-qualified as possible, including filling in wildcard
+information determined in processing.</string>
+       </void>
+       <void property="name">
+        <string>mteHotContextName</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.1.3</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription3">
+       <void property="description">
+        <string>The object identifier of the destination object related to the
+notification.  This MUST be as fully-qualified as possible,
+including filling in wildcard information determined in
+processing.
+
+For a trigger-related notification this is from
+mteTriggerValueID.
+
+For a set failure this is from mteEventSetObject.</string>
+       </void>
+       <void property="name">
+        <string>mteHotOID</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.1.4</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription4">
+       <void property="description">
+        <string>The value of the object at mteTriggerValueID when a
+trigger fired.</string>
+       </void>
+       <void property="name">
+        <string>mteHotValue</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.1.5</string>
+       </void>
+       <void property="type">
+        <object class="java.lang.Enum" id="FieldType1" method="valueOf">
+         <class>com.btisystems.pronx.ems.schemas.meta.notification.FieldType</class>
+         <string>INTEGER</string>
+        </object>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription5">
+       <void property="description">
+        <string>The reason for the failure of an attempt to check for a
+trigger condition or set an object in response to an event.</string>
+       </void>
+       <void property="name">
+        <string>mteFailedReason</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.1.6</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription6">
+       <void property="description">
+        <string>The most recent error that occurred during the invocation of
+a scheduled action.  The value noError(0) is returned
+if no errors have occurred yet.</string>
+       </void>
+       <void property="name">
+        <string>schedLastFailure</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.63.1.2.1.17</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription7">
+       <void property="description">
+        <string>The date and time when the most recent failure occurred.
+
+The value &apos;0000000000000000&apos;H is returned if no failure
+occurred since the last re-initialization of the scheduler.</string>
+       </void>
+       <void property="name">
+        <string>schedLastFailed</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.63.1.2.1.18</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription8">
+       <void property="description">
+        <string>The value of this object indicates the reason why a
+script finished execution. The smRunExitCode code may have
+one of the following values:
+
+- `noError&apos;, which indicates that the script completed
+   successfully without errors;
+
+- `halted&apos;, which indicates that the script was halted
+   by a request from an authorized manager;
+
+- `lifeTimeExceeded&apos;, which indicates that the script
+   exited because a time limit was exceeded;
+
+- `noResourcesLeft&apos;, which indicates that the script
+   exited because it ran out of resources (e.g. memory);
+
+- `languageError&apos;, which indicates that the script exited
+   because of a language error (e.g. a syntax error in an
+   interpreted language);
+
+- `runtimeError&apos;, which indicates that the script exited
+   due to a runtime error (e.g. a division by zero);
+
+- `invalidArgument&apos;, which indicates that the script could
+   not be run because of invalid script arguments;
+
+- `securityViolation&apos;, which indicates that the script
+   exited due to a security violation;
+
+- `genericError&apos;, which indicates that the script exited
+   for an unspecified reason.
+
+If the script has not yet begun running, or is currently
+running, the value will be `noError&apos;.</string>
+       </void>
+       <void property="name">
+        <string>smRunExitCode</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.64.1.4.2.1.7</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription9">
+       <void property="description">
+        <string>The date and time when the execution terminated. The value
+&apos;0000000000000000&apos;H is returned if the script has not
+terminated yet.</string>
+       </void>
+       <void property="name">
+        <string>smRunEndTime</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.64.1.4.2.1.4</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription10">
+       <void property="description">
+        <string>This object contains a descriptive error message if the
+script startup or execution raised an abnormal condition.
+An implementation must store a descriptive error message
+in this object if the script exits with the smRunExitCode
+`genericError&apos;.</string>
+       </void>
+       <void property="name">
+        <string>smRunError</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.64.1.4.2.1.11</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription11">
+       <void property="description">
+        <string>The result value produced by the running script. Note that
+the result may change while the script is executing.</string>
+       </void>
+       <void property="name">
+        <string>smRunResult</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.64.1.4.2.1.8</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription12">
+       <void property="description">
+        <string>A unique value for each interface.  Its value
+ranges between 1 and the value of ifNumber.  The
+value for each interface must remain constant at
+least from one re-initialization of the entity&apos;s
+network management system to the next re-
+initialization.</string>
+       </void>
+       <void property="name">
+        <string>ifIndex</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.2.2.1.1</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription13">
+       <void property="description">
+        <string>The desired state of the interface.  The
+testing(3) state indicates that no operational
+packets can be passed.</string>
+       </void>
+       <void property="name">
+        <string>ifAdminStatus</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.2.2.1.7</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription14">
+       <void property="description">
+        <string>The current operational state of the interface.
+The testing(3) state indicates that no operational
+packets can be passed.</string>
+       </void>
+       <void property="name">
+        <string>ifOperStatus</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.2.2.1.8</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription15">
+       <void property="description">
+        <string>A textual string containing information about the
+interface.  This string may be set by the network
+management system.</string>
+       </void>
+       <void property="name">
+        <string>ipv6IfDescr</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.55.1.5.1.2</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription16">
+       <void property="description">
+        <string>The current operational state of the interface.
+The noIfIdentifier(3) state indicates that no valid
+Interface Identifier is assigned to the interface.
+This state usually indicates that the link-local
+interface address failed Duplicate Address Detection.
+If ipv6IfAdminStatus is down(2) then ipv6IfOperStatus
+should be down(2).  If ipv6IfAdminStatus is changed
+to up(1) then ipv6IfOperStatus should change to up(1)
+if the interface is ready to transmit and receive
+network traffic; it should remain in the down(2) or
+noIfIdentifier(3) state if and only if there is a
+fault that prevents it from going to the up(1) state;
+it should remain in the notPresent(5) state if
+the interface has missing (typically, lower layer)
+components.</string>
+       </void>
+       <void property="name">
+        <string>ipv6IfOperStatus</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.55.1.5.1.10</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription17">
+       <void property="description">
+        <string>A simple integer object, to act as a payload for the
+netSnmpExampleHeartbeatNotification.  The value has
+no real meaning, but is nominally the interval (in
+seconds) between successive heartbeat notifications.</string>
+       </void>
+       <void property="name">
+        <string>netSnmpExampleHeartbeatRate</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.4.1.8072.2.3.2.1</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription18">
+       <void property="description">
+        <string>An index that uniquely identifies an entry in the
+alarm table.  Each such entry defines a
+diagnostic sample at a particular interval
+for an object on the device.</string>
+       </void>
+       <void property="name">
+        <string>alarmIndex</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.16.3.1.1.1</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription19">
+       <void property="description">
+        <string>The object identifier of the particular variable to be
+sampled.  Only variables that resolve to an ASN.1 primitive
+type of INTEGER (INTEGER, Integer32, Counter32, Counter64,
+Gauge, or TimeTicks) may be sampled.
+
+Because SNMP access control is articulated entirely
+in terms of the contents of MIB views, no access
+control mechanism exists that can restrict the value of
+this object to identify only those objects that exist
+in a particular MIB view.  Because there is thus no
+acceptable means of restricting the read access that
+could be obtained through the alarm mechanism, the
+probe must only grant write access to this object in
+
+those views that have read access to all objects on
+the probe.
+
+During a set operation, if the supplied variable name is
+not available in the selected MIB view, a badValue error
+must be returned.  If at any time the variable name of
+an established alarmEntry is no longer available in the
+selected MIB view, the probe must change the status of
+this alarmEntry to invalid(4).
+
+This object may not be modified if the associated
+alarmStatus object is equal to valid(1).</string>
+       </void>
+       <void property="name">
+        <string>alarmVariable</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.16.3.1.1.3</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType0"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription20">
+       <void property="description">
+        <string>The method of sampling the selected variable and
+calculating the value to be compared against the
+thresholds.  If the value of this object is
+absoluteValue(1), the value of the selected variable
+will be compared directly with the thresholds at the
+end of the sampling interval.  If the value of this
+object is deltaValue(2), the value of the selected
+variable at the last sample will be subtracted from
+the current value, and the difference compared with
+the thresholds.
+
+This object may not be modified if the associated
+alarmStatus object is equal to valid(1).</string>
+       </void>
+       <void property="name">
+        <string>alarmSampleType</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.16.3.1.1.4</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription21">
+       <void property="description">
+        <string>The value of the statistic during the last sampling
+period.  For example, if the sample type is deltaValue,
+this value will be the difference between the samples
+at the beginning and end of the period.  If the sample
+type is absoluteValue, this value will be the sampled
+value at the end of the period.
+
+This is the value that is compared with the rising and
+falling thresholds.
+
+The value during the current sampling period is not
+made available until the period is completed and will
+remain available until the next period completes.</string>
+       </void>
+       <void property="name">
+        <string>alarmValue</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.16.3.1.1.5</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription22">
+       <void property="description">
+        <string>A threshold for the sampled statistic.  When the current
+sampled value is greater than or equal to this threshold,
+and the value at the last sampling interval was less than
+this threshold, a single event will be generated.
+A single event will also be generated if the first
+sample after this entry becomes valid is greater than or
+equal to this threshold and the associated
+alarmStartupAlarm is equal to risingAlarm(1) or
+risingOrFallingAlarm(3).
+
+After a rising event is generated, another such event
+
+will not be generated until the sampled value
+falls below this threshold and reaches the
+alarmFallingThreshold.
+
+This object may not be modified if the associated
+alarmStatus object is equal to valid(1).</string>
+       </void>
+       <void property="name">
+        <string>alarmRisingThreshold</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.16.3.1.1.7</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldDescription" id="FieldDescription23">
+       <void property="description">
+        <string>A threshold for the sampled statistic.  When the current
+sampled value is less than or equal to this threshold,
+and the value at the last sampling interval was greater than
+this threshold, a single event will be generated.
+A single event will also be generated if the first
+sample after this entry becomes valid is less than or
+equal to this threshold and the associated
+alarmStartupAlarm is equal to fallingAlarm(2) or
+risingOrFallingAlarm(3).
+
+After a falling event is generated, another such event
+will not be generated until the sampled value
+rises above this threshold and reaches the
+alarmRisingThreshold.
+
+This object may not be modified if the associated
+alarmStatus object is equal to valid(1).</string>
+       </void>
+       <void property="name">
+        <string>alarmFallingThreshold</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.16.3.1.1.8</string>
+       </void>
+       <void property="type">
+        <object idref="FieldType1"/>
+       </void>
+      </object>
+     </void>
+    </void>
+   </object>
+  </void>
+  <void property="notificationList">
+   <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationList" id="NotificationList0">
+    <void property="notificationDefinition">
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition0">
+       <void property="description">
+        <string>Notification that the trigger indicated by the object
+instances has fired, for triggers with mteTriggerType
+&apos;boolean&apos; or &apos;existence&apos;.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription0"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription1"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription2"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription3"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription4"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>mteTriggerFired</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.0.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition1">
+       <void property="description">
+        <string>Notification that the rising threshold was met for triggers
+with mteTriggerType &apos;threshold&apos;.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription0"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription1"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription2"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription3"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription4"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>mteTriggerRising</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.0.2</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition2">
+       <void property="description">
+        <string>Notification that the falling threshold was met for triggers
+with mteTriggerType &apos;threshold&apos;.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription0"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription1"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription2"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription3"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription4"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>mteTriggerFalling</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.0.3</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition3">
+       <void property="description">
+        <string>Notification that an attempt to check a trigger has failed.
+
+The network manager must enable this notification only with
+a certain fear and trembling, as it can easily crowd out more
+important information.  It should be used only to help diagnose
+a problem that has appeared in the error counters and can not
+be found otherwise.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription0"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription1"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription2"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription3"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription5"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>mteTriggerFailure</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.0.4</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition4">
+       <void property="description">
+        <string>Notification that an attempt to do a set in response to an
+event has failed.
+
+The network manager must enable this notification only with
+a certain fear and trembling, as it can easily crowd out more
+important information.  It should be used only to help diagnose
+a problem that has appeared in the error counters and can not
+be found otherwise.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription0"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription1"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription2"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription3"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription5"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>mteEventSetFailure</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.88.2.0.5</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition">
+       <void property="description">
+        <string>A coldStart trap signifies that the SNMP entity,
+supporting a notification originator application, is
+reinitializing itself and that its configuration may
+have been altered.</string>
+       </void>
+       <void property="name">
+        <string>coldStart</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.6.3.1.1.5.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition">
+       <void property="description">
+        <string>A warmStart trap signifies that the SNMP entity,
+supporting a notification originator application,
+is reinitializing itself such that its configuration
+is unaltered.</string>
+       </void>
+       <void property="name">
+        <string>warmStart</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.6.3.1.1.5.2</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition">
+       <void property="description">
+        <string>An authenticationFailure trap signifies that the SNMP
+entity has received a protocol message that is not
+properly authenticated.  While all implementations
+of SNMP entities MAY be capable of generating this
+trap, the snmpEnableAuthenTraps object indicates
+whether this trap will be generated.</string>
+       </void>
+       <void property="name">
+        <string>authenticationFailure</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.6.3.1.1.5.5</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition5">
+       <void property="description">
+        <string>This notification is generated whenever the invocation of a
+scheduled action fails.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription6"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription7"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>schedActionFailure</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.63.2.0.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition6">
+       <void property="description">
+        <string>This notification is generated whenever a running script
+terminates with an smRunExitCode unequal to `noError&apos;.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription8"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription9"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription10"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>smScriptAbort</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.64.2.0.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition7">
+       <void property="description">
+        <string>This notification can be used by scripts to notify other
+management applications about results produced by the
+script.
+
+This notification is not automatically generated by the
+Script MIB implementation. It is the responsibility of
+the executing script to emit this notification where it
+is appropriate to do so.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription11"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>smScriptResult</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.64.2.0.2</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition8">
+       <void property="description">
+        <string>This notification can be used by scripts to notify other
+management applications about script errors.
+
+This notification is not automatically generated by the
+Script MIB implementation. It is the responsibility of
+the executing script or the runtime system to emit this
+notification where it is appropriate to do so.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription10"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>smScriptException</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.64.2.0.3</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition9">
+       <void property="description">
+        <string>A linkDown trap signifies that the SNMP entity, acting in
+an agent role, has detected that the ifOperStatus object for
+one of its communication links is about to enter the down
+state from some other state (but not from the notPresent
+state).  This other state is indicated by the included value
+of ifOperStatus.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription12"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription13"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription14"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>linkDown</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.6.3.1.1.5.3</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition10">
+       <void property="description">
+        <string>A linkUp trap signifies that the SNMP entity, acting in an
+agent role, has detected that the ifOperStatus object for
+one of its communication links left the down state and
+transitioned into some other state (but not into the
+notPresent state).  This other state is indicated by the
+included value of ifOperStatus.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription12"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription13"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription14"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>linkUp</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.6.3.1.1.5.4</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition11">
+       <void property="description">
+        <string>An ipv6IfStateChange notification signifies
+that there has been a change in the state of
+an ipv6 interface.  This notification should
+be generated when the interface&apos;s operational
+status transitions to or from the up(1) state.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription15"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription16"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>ipv6IfStateChange</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.55.2.0.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition">
+       <void property="description">
+        <string></string>
+       </void>
+       <void property="name">
+        <string>ucdStart</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.4.1.2021.251.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition">
+       <void property="description">
+        <string>This trap is sent when the agent terminates</string>
+       </void>
+       <void property="name">
+        <string>ucdShutdown</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.4.1.2021.251.2</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition">
+       <void property="description">
+        <string>An indication that the agent has started running.</string>
+       </void>
+       <void property="name">
+        <string>nsNotifyStart</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.4.1.8072.4.0.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition">
+       <void property="description">
+        <string>An indication that the agent is in the process of being shut down.</string>
+       </void>
+       <void property="name">
+        <string>nsNotifyShutdown</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.4.1.8072.4.0.2</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition">
+       <void property="description">
+        <string>An indication that the agent has been restarted.
+This does not imply anything about whether the configuration has
+changed or not (unlike the standard coldStart or warmStart traps)</string>
+       </void>
+       <void property="name">
+        <string>nsNotifyRestart</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.4.1.8072.4.0.3</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition12">
+       <void property="description">
+        <string>An example notification, used to illustrate the
+definition and generation of trap and inform PDUs
+(including the use of both standard and additional
+varbinds in the notification payload).
+This notification will typically be sent every
+30 seconds, using the code found in the example module
+    agent/mibgroup/examples/notification.c</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription17"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>netSnmpExampleHeartbeatNotification</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.4.1.8072.2.3.0.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition13">
+       <void property="description">
+        <string>The SNMP trap that is generated when an alarm
+entry crosses its rising threshold and generates
+an event that is configured for sending SNMP
+traps.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription18"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription19"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription20"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription21"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription22"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>risingAlarm</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.16.0.1</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="com.btisystems.pronx.ems.schemas.meta.notification.NotificationDefinition" id="NotificationDefinition14">
+       <void property="description">
+        <string>The SNMP trap that is generated when an alarm
+entry crosses its falling threshold and generates
+an event that is configured for sending SNMP
+traps.</string>
+       </void>
+       <void property="fieldReference">
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription18"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription19"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription20"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription21"/>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.btisystems.pronx.ems.schemas.meta.notification.FieldReference">
+          <void property="description">
+           <object idref="FieldDescription23"/>
+          </void>
+         </object>
+        </void>
+       </void>
+       <void property="name">
+        <string>fallingAlarm</string>
+       </void>
+       <void property="oid">
+        <string>1.3.6.1.2.1.16.0.2</string>
+       </void>
+      </object>
+     </void>
+    </void>
+   </object>
+  </void>
+ </object>
+ <object idref="NotificationMeta0"/>
+</java>
