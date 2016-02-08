@@ -88,8 +88,8 @@ class DisplayHintParser {
 
                     final int octetCount = Integer.parseInt(matcher.group(OCTET_COUNT_INDEX));
                     final int octetWidth = getOctetWidth(octetCount, matcher.group(FORMAT_INDEX).charAt(0));
-                    final int separatorWidth = (matcher.group(SEPARATOR_INDEX).length() > 0) ? 1 : 0;
-                    final int terminatorWidth = (matcher.group(TERMINATOR_INDEX).length() > 0) ? 1 : 0;
+                    final int separatorWidth = matcher.group(SEPARATOR_INDEX).length() > 0 ? 1 : 0;
+                    final int terminatorWidth = matcher.group(TERMINATOR_INDEX).length() > 0 ? 1 : 0;
 
                     final int fieldWidth = repeater * (octetWidth + separatorWidth + terminatorWidth);
                     LOG.debug("FieldWidth {}", fieldWidth);
@@ -110,10 +110,10 @@ class DisplayHintParser {
             // TODO Smarter way to determine widths?
             switch (format) {
             case 'd':
-                    width = ((octetCount * FIVE) / 2) + (octetCount % 2);
+                    width = octetCount * FIVE / 2 + octetCount % 2;
                     break;
             case 'o':
-                    width = (octetCount * THREE) - ((octetCount - 1) / THREE);
+                    width = octetCount * THREE - (octetCount - 1) / THREE;
                     break;
             case 'x':
                     width = octetCount * 2;

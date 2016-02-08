@@ -1,7 +1,6 @@
 /**
- *
  * Copyright (C) BTI Systems Inc. 2001-2010. All Rights Reserved.
- *
+ * <p/>
  * The information contained herein is the property of BTI Systems
  * Inc. and is strictly confidential. Except as expressly authorized
  * in writing by BTI Systems Inc., the holder shall keep all
@@ -13,24 +12,21 @@
  * reasonable care. Except as expressly authorized in writing by BTI
  * Systems Inc., the holder is granted no rights to use the
  * information contained herein.
- *
+ * <p/>
  * Unpublished. All rights reserved under the copyright laws of
  * Canada.
- *
+ * <p/>
  * $Id: App.java 16769 2014-11-03 21:55:58Z sjames $
  */
 
 package com.btisystems.pronx.ems;
 
 import com.btisystems.pronx.ems.model.DeviceGroup;
-import com.btisystems.pronx.ems.model.MibCommon;
 import com.btisystems.pronx.ems.model.MibInput;
 import com.btisystems.pronx.ems.model.MibSource;
 import com.btisystems.pronx.ems.schemas.meta.notification.NotificationMeta;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
 import net.percederberg.mibble.Mib;
 import net.percederberg.mibble.MibLoader;
 import net.percederberg.mibble.MibLoaderException;
@@ -49,6 +45,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -68,7 +66,7 @@ import java.util.Set;
 /**
  * autogen application - mib compiler.
  */
-public class App {
+public class    App {
 
     private static final String DEFAULT_CONTEXT = "src/main/resources/defaultConfiguration.xml";
 
@@ -104,9 +102,9 @@ public class App {
             if (groupList != null) {
 
                 processMibFiles(groupList);
-                
+
                 buildSourceFiles();
-                
+
                 deleteImportedSource();
             }
         }
@@ -130,8 +128,8 @@ public class App {
 
         // create the command line parser
         final CommandLineParser parser = new PosixParser();
- 
-       // create Options object
+
+        // create Options object
         final Options options = new Options();
         options.addOption(CONTEXT, true, "name of Spring context");
         options.addOption("help", false, "print this message");
@@ -150,7 +148,7 @@ public class App {
             if (line.hasOption(CONTEXT)) {
                 return line.getOptionValue(CONTEXT);
             }
-            return "file:${project.basedir}/" +  DEFAULT_CONTEXT;
+            return "file:${project.basedir}/" + DEFAULT_CONTEXT;
 
         } catch (final ParseException exp) {
             LOG.info("Unexpected exception:" + exp.getMessage());
@@ -200,7 +198,7 @@ public class App {
      * @return
      */
     private static Collection<String> compileMibs(final DeviceGroup group, final MibLoader loader,
-                               final MibSource source, final Map<String, JDefinedClass> interfaceMap) {
+                                                  final MibSource source, final Map<String, JDefinedClass> interfaceMap) {
 
         // Get complete package name using group + source.
         final String packageName = buildPackageName(group.getPackageName(), source.getPackageName());
@@ -209,9 +207,9 @@ public class App {
         final Map<String, List<MibValueSymbol>> symbolMap = locateChildSymbols(rootSymbols, source.getExcludedRootObjects());
 
         final MibEntityCompiler compiler = new MibEntityCompiler(symbolMap, packageName, interfaceMap, codeModel);
-        
+
         compiler.importDependencies();
-        
+
         for (List<MibValueSymbol> symbolList : symbolMap.values()) {
             final Iterator<MibValueSymbol> iterator = symbolList.iterator();
             while (iterator.hasNext()) {
@@ -222,7 +220,7 @@ public class App {
                 }
             }
         }
-        
+
         compiler.compile(codeModel);
 
         compileNotifications(loader, packageName, source.isGenerateNotificationObjects());
@@ -233,7 +231,7 @@ public class App {
     }
 
     private static void compileNotifications(final MibLoader loader, final String packageName, final boolean generateNotificationObjects) {
-        if (generateNotificationObjects){
+        if (generateNotificationObjects) {
             final MibNotificationObjectCompiler notificationObjectCompiler = new MibNotificationObjectCompiler(loader, packageName);
             notificationObjectCompiler.compile(codeModel);
 
@@ -261,8 +259,8 @@ public class App {
         return new File(properties.getProperty("target-registry-directory"), packageName + ".xml");
     }
 
-    private static void registerEntities(final Map<String, Map <String, List<MibValueSymbol>>> groupEntities,
-            final Map<String, List<MibValueSymbol>> symbolMap) {
+    private static void registerEntities(final Map<String, Map<String, List<MibValueSymbol>>> groupEntities,
+                                         final Map<String, List<MibValueSymbol>> symbolMap) {
         for (final Entry<String, List<MibValueSymbol>> rootSymbolListEntry : symbolMap.entrySet()) {
             final String rootOid = rootSymbolListEntry.getKey();
             Map<String, List<MibValueSymbol>> groupRootSymbolMap = groupEntities.get(rootOid);
@@ -321,7 +319,7 @@ public class App {
 
         // Identify single version entities
         final Set<MibValueSymbol> commonIdentifiers = new HashSet<>();
-        for (final Entry <String, Map<String, List<MibValueSymbol>>> rootMapEntry : groupRootOidMap.entrySet()) {
+        for (final Entry<String, Map<String, List<MibValueSymbol>>> rootMapEntry : groupRootOidMap.entrySet()) {
             LOG.debug("root OID : {}", rootMapEntry.getKey());
             final List<MibValueSymbol> rootInterfaceList = new ArrayList<>();
             rootInterfaceMap.put(rootMapEntry.getKey(), rootInterfaceList);
@@ -376,7 +374,7 @@ public class App {
     }
 
     private static String buildPackageName(final String rootName,
-            final String childName) {
+                                           final String childName) {
         String builtName;
         if (childName != null && childName.length() > 0) {
             builtName = rootName + "." + childName;
@@ -489,7 +487,7 @@ public class App {
     }
 
     private static boolean loadMibs(final MibLoader loader,
-                                      final List<File> sourceFiles) {
+                                    final List<File> sourceFiles) {
 
         for (final File sourceName : sourceFiles) {
             if (!sourceName.isDirectory()) {
@@ -537,13 +535,13 @@ public class App {
     }
 
     private static Map<String, List<MibValueSymbol>> getCompilableEntitySymbols(final MibLoader loader,
-            final MibInput source) {
+                                                                                final MibInput source) {
         final List<MibValueSymbol> rootSymbols = locateRootSymbols(loader, source.getRootObjects());
         return locateChildSymbols(rootSymbols, source.getExcludedRootObjects());
     }
 
     private static Map<String, List<MibValueSymbol>> locateChildSymbols(final List<MibValueSymbol> rootSymbols,
-                                                                                final Set<String> excludedRoots) {
+                                                                        final Set<String> excludedRoots) {
         final Map<String, List<MibValueSymbol>> rootSymbolMap = new HashMap<>();
         for (final MibValueSymbol rootSymbol : rootSymbols) {
             rootSymbolMap.put(rootSymbol.getValue().toString(), getChildEntities(rootSymbol, excludedRoots));
@@ -552,7 +550,7 @@ public class App {
     }
 
     private static List<MibValueSymbol> getChildEntities(final MibValueSymbol rootSymbol,
-            final Set<String> excludedRoots) {
+                                                         final Set<String> excludedRoots) {
         LOG.debug(">>> getChildEntities:{}", rootSymbol);
         final List<MibValueSymbol> masterList = new ArrayList<>();
         if (rootSymbol.isTable()) {
@@ -581,7 +579,7 @@ public class App {
 
     private static boolean isObjectExcluded(final ObjectIdentifierValue oidValue, final Set<String> excludedRoots) {
         LOG.debug("check exlusion:{} {}", oidValue.toString(), excludedRoots);
-        return (excludedRoots != null && excludedRoots.contains(oidValue.toString()));
+        return excludedRoots != null && excludedRoots.contains(oidValue.toString());
     }
 
     private static String getOidFromSymbol(final MibValueSymbol rootSymbol) {

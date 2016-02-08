@@ -85,8 +85,6 @@ import java.util.TreeMap;
  */
 public class MibEntityCompiler extends AbstractMibCompiler {
 
-    private static final String NAME = "name";
-
     private static final String INTERFACE_PREFIX = "I";
 
     private static final Logger LOG = LoggerFactory.getLogger(MibEntityCompiler.class);

@@ -96,7 +96,7 @@ public abstract class AbstractMibCompiler {
     /**
      * The constant DEFAULT_OCTET_STRING_COLUMN_WIDTH.
      */
-    protected static final int DEFAULT_OCTET_STRING_COLUMN_WIDTH = (SIXTY_FOUR * ONE_THOUSAND_AND_TWENTY_FOUR) - 1;
+    protected static final int DEFAULT_OCTET_STRING_COLUMN_WIDTH = SIXTY_FOUR * ONE_THOUSAND_AND_TWENTY_FOUR - 1;
 
     private static final int OCTET_STRING_DISPLAY_FACTOR = 4;
     private static final int MAXIMUM_OCTET_STRING_LENGTH_DISPLAY_FACTOR_APPLIES = 16;
@@ -510,7 +510,7 @@ public abstract class AbstractMibCompiler {
      * @return the boolean
      */
     protected final boolean isTableEntryField(final JFieldVar value) {
-        return (value.type() instanceof JClass && ((JClass) value.type()).isParameterized());
+        return value.type() instanceof JClass && ((JClass) value.type()).isParameterized();
     }
 
     /**
@@ -693,7 +693,7 @@ public abstract class AbstractMibCompiler {
      * @return the boolean
      */
     protected final boolean isSimpleType(final MibValueSymbol symbol) {
-        return (symbol.isScalar() || symbol.isTableColumn());
+        return symbol.isScalar() || symbol.isTableColumn();
     }
 
     /**
@@ -917,7 +917,7 @@ public abstract class AbstractMibCompiler {
         if (constraint instanceof SizeConstraint) {
             maximumFieldWidth = getMaxFieldWidthFromSizeConstraint(type, (SizeConstraint) constraint);
         }
-        return (maximumFieldWidth > 0) ? maximumFieldWidth : DEFAULT_OCTET_STRING_COLUMN_WIDTH;
+        return maximumFieldWidth > 0 ? maximumFieldWidth : DEFAULT_OCTET_STRING_COLUMN_WIDTH;
     }
 
     private int getMaxFieldWidthFromSizeConstraint(final MibType type, final SizeConstraint sizeConstraint) {
@@ -967,7 +967,7 @@ public abstract class AbstractMibCompiler {
             }
         } else {
             // For shorter fields without a DISPLAY HINT, give them some extra space for formatting.
-            maximumFieldWidth = (maximumOctets <= MAXIMUM_OCTET_STRING_LENGTH_DISPLAY_FACTOR_APPLIES)
+            maximumFieldWidth = maximumOctets <= MAXIMUM_OCTET_STRING_LENGTH_DISPLAY_FACTOR_APPLIES
                     ? maximumOctets * OCTET_STRING_DISPLAY_FACTOR
                     : maximumOctets;
         }
