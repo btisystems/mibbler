@@ -51,7 +51,7 @@ public class MibNotificationObjectCompiler extends AbstractMibCompiler {
     /**
      * Instantiates a new Mib notification object compiler.
      *
-     * @param loader      the loader
+     * @param loader the loader
      * @param packageName the package name
      */
     public MibNotificationObjectCompiler(final MibLoader loader, final String packageName) {
@@ -82,18 +82,16 @@ public class MibNotificationObjectCompiler extends AbstractMibCompiler {
         }
     }
 
-
     /**
      * Create field in a class.
+     * 
      * @param child
      * @param fieldName
      * @param type
      * @param definedClass
      */
-    private void createField(final MibValueSymbol child,
-                              final String fieldName,
-                              final JType type,
-                              final JDefinedClass definedClass) {
+    private void createField(final MibValueSymbol child, final String fieldName, final JType type,
+            final JDefinedClass definedClass) {
 
         LOG.debug("Add field {} to class {}", fieldName, definedClass);
 
@@ -103,9 +101,10 @@ public class MibNotificationObjectCompiler extends AbstractMibCompiler {
         generateAccessors(definedClass, child, type, fieldName);
     }
 
-
     /**
-     * Build a class associated with a Mib Symbol, recursively creating any classes on which the class depends.
+     * Build a class associated with a Mib Symbol, recursively creating any
+     * classes on which the class depends.
+     * 
      * @param packageName
      * @param rootSymbol
      * @return
@@ -122,7 +121,7 @@ public class MibNotificationObjectCompiler extends AbstractMibCompiler {
 
         // Create class fields, creating any nested classes as necessary
 
-        final List<ObjectIdentifierValue> fields = getNotificationFields((SnmpNotificationType)rootSymbol.getType());
+        final List<ObjectIdentifierValue> fields = getNotificationFields((SnmpNotificationType) rootSymbol.getType());
         final MibValueSymbol[] children = new MibValueSymbol[fields.size()];
         for (int i = 0; i < fields.size(); i++) {
             children[i] = getSymbolByOid(rootSymbol, fields.get(i));
@@ -137,17 +136,16 @@ public class MibNotificationObjectCompiler extends AbstractMibCompiler {
         return definedClass;
     }
 
-
     /**
      * Create the child fields for the object.
+     * 
      * @param name
      * @param children
      * @param definedClass
      * @return
      */
-    private List<MibValueSymbol> createChildFields(final String name,
-                                                   final MibValueSymbol[] children,
-                                                   final JDefinedClass definedClass) {
+    private List<MibValueSymbol> createChildFields(final String name, final MibValueSymbol[] children,
+            final JDefinedClass definedClass) {
         final List<MibValueSymbol> childEntities = new ArrayList<>();
 
         LOG.debug("Creating {} child fields for {}", children.length, name);
@@ -156,7 +154,8 @@ public class MibNotificationObjectCompiler extends AbstractMibCompiler {
 
             if (child != null) {
 
-                // Establish type of field - this will create a new class if necessary.
+                // Establish type of field - this will create a new class if
+                // necessary.
                 final JType type = getJavaTypeOfField(child);
                 if (type == null) {
                     LOG.debug("Not generating empty entity:{}", child.getName());

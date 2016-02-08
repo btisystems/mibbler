@@ -38,7 +38,7 @@ public abstract class MibInput implements InitializingBean {
     /**
      * The name of the files containing the source to be compiled.
      */
-    private  List<String> sourceFilenames;
+    private List<String> sourceFilenames;
 
     /**
      * The name of the directories containing the source files.
@@ -48,7 +48,7 @@ public abstract class MibInput implements InitializingBean {
     /**
      * The name of the java package to which generated classes are to belong.
      */
-    private  String packageName;
+    private String packageName;
 
     /**
      * The default source directories to be given to the Mib Loader.
@@ -61,17 +61,17 @@ public abstract class MibInput implements InitializingBean {
     private List<String> rootObjects;
 
     /**
-     * The OIDs of the root of sub-trees that should be excluded from the compilation.
+     * The OIDs of the root of sub-trees that should be excluded from the
+     * compilation.
      */
     private Set<String> excludedRootObjects;
-
 
     /**
      * Sets root objects.
      *
      * @param rootObjects the root objects
      */
-//    @Required
+    // @Required
     public final void setRootObjects(final List<String> rootObjects) {
         this.rootObjects = rootObjects;
     }
@@ -81,7 +81,7 @@ public abstract class MibInput implements InitializingBean {
      *
      * @param packageName the package name
      */
-//    @Required
+    // @Required
     public final void setPackageName(final String packageName) {
         this.packageName = packageName;
     }
@@ -197,9 +197,7 @@ public abstract class MibInput implements InitializingBean {
         final List<String> filenames = new ArrayList<>();
         for (final String sourceDirectory : sourceDirectoryList) {
             final File directory = new File(sourceDirectory);
-            final File[] listFiles = checkNotNull(
-                    directory.listFiles(),
-                    "Invalid source directory=" + sourceDirectory);
+            final File[] listFiles = checkNotNull(directory.listFiles(), "Invalid source directory=" + sourceDirectory);
             for (final File file : listFiles) {
                 filenames.add(file.getPath());
             }

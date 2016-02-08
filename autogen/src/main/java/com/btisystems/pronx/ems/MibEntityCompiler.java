@@ -80,8 +80,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 /**
- * Manages the 'compilation' of a Mib, by generating Java entity classes for each
- * of the managed objects.
+ * Manages the 'compilation' of a Mib, by generating Java entity classes for
+ * each of the managed objects.
  */
 public class MibEntityCompiler extends AbstractMibCompiler {
 
@@ -89,7 +89,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
 
     private static final Logger LOG = LoggerFactory.getLogger(MibEntityCompiler.class);
 
-    private static final int PUBLIC_FINAL_STATIC = JMod.PUBLIC |  JMod.FINAL | JMod.STATIC;
+    private static final int PUBLIC_FINAL_STATIC = JMod.PUBLIC | JMod.FINAL | JMod.STATIC;
 
     private final Map<String, List<MibValueSymbol>> rootSymbolMap;
     private final Map<String, JDefinedClass> oidClasses = new TreeMap<>();
@@ -98,43 +98,46 @@ public class MibEntityCompiler extends AbstractMibCompiler {
     public static final Set<String> IMPORTED_SYMBOLS = new HashSet<>();
 
     /**
-     * Maintains an occurrence count for each unqualified class name.
-     * Used to assign a numeric suffix for names of tables and fields that are derived from the class name.
+     * Maintains an occurrence count for each unqualified class name. Used to
+     * assign a numeric suffix for names of tables and fields that are derived
+     * from the class name.
      */
     private final Map<String, Integer> classNameOccurrences = new HashMap<>();
 
     /**
      * Class constructor.
      *
-     * @param symbolMap    associates the root OIDs with the symbols that belong to the associated tree
-     * @param packageName  the name of the package to which classes are to be added
-     * @param interfaceMap associates an OID with the {@link JDefinedClass} that defines the interface      to be implemented by an entity derived from that OID.
+     * @param symbolMap associates the root OIDs with the symbols that belong to
+     *            the associated tree
+     * @param packageName the name of the package to which classes are to be
+     *            added
+     * @param interfaceMap associates an OID with the {@link JDefinedClass} that
+     *            defines the interface to be implemented by an entity derived
+     *            from that OID.
      */
-    public MibEntityCompiler(final Map<String, List<MibValueSymbol>> symbolMap,
-                       final String packageName,
-                       final Map<String, JDefinedClass> interfaceMap) {
+    public MibEntityCompiler(final Map<String, List<MibValueSymbol>> symbolMap, final String packageName,
+            final Map<String, JDefinedClass> interfaceMap) {
         super(packageName);
         this.rootSymbolMap = symbolMap;
         this.interfaceMap = interfaceMap;
     }
-    
-    public MibEntityCompiler(final Map<String, List<MibValueSymbol>> symbolMap,
-                       final String packageName,
-                       final Map<String, JDefinedClass> interfaceMap, 
-                       final JCodeModel codeModel) {
+
+    public MibEntityCompiler(final Map<String, List<MibValueSymbol>> symbolMap, final String packageName,
+            final Map<String, JDefinedClass> interfaceMap, final JCodeModel codeModel) {
         this(symbolMap, packageName, interfaceMap);
         this.codeModel = codeModel;
-        
+
     }
 
     /**
      * Class constructor.
      *
-     * @param symbolMap   associates the root OIDs with the symbols that belong to the associated tree
-     * @param packageName the name of the package to which classes are to be added
+     * @param symbolMap associates the root OIDs with the symbols that belong to
+     *            the associated tree
+     * @param packageName the name of the package to which classes are to be
+     *            added
      */
-    public MibEntityCompiler(final Map<String, List<MibValueSymbol>> symbolMap,
-                       final String packageName) {
+    public MibEntityCompiler(final Map<String, List<MibValueSymbol>> symbolMap, final String packageName) {
         this(symbolMap, packageName, null);
     }
 
@@ -145,7 +148,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
      */
     public final void compile(final JCodeModel codeModel) {
         this.codeModel = codeModel;
-        for (final  Entry<String, List<MibValueSymbol>> rootEntry : rootSymbolMap.entrySet()) {
+        for (final Entry<String, List<MibValueSymbol>> rootEntry : rootSymbolMap.entrySet()) {
             for (final MibValueSymbol child : rootEntry.getValue()) {
                 buildClass(createEntityPackageName(rootEntry.getKey(), child), child, null);
             }
@@ -155,26 +158,28 @@ public class MibEntityCompiler extends AbstractMibCompiler {
     /**
      * Compile interfaces.
      *
-     * @param codeModel         the code model
+     * @param codeModel the code model
      * @param commonIdentifiers the common identifiers
      */
     public final void compileInterfaces(final JCodeModel codeModel, final Set<MibValueSymbol> commonIdentifiers) {
         this.codeModel = codeModel;
-        for (final  Entry<String, List<MibValueSymbol>> rootEntry : rootSymbolMap.entrySet()) {
+        for (final Entry<String, List<MibValueSymbol>> rootEntry : rootSymbolMap.entrySet()) {
             for (final MibValueSymbol child : rootEntry.getValue()) {
                 buildInterface(createEntityPackageName(rootEntry.getKey(), child), child, commonIdentifiers);
             }
         }
     }
 
-    private JClass buildInterface(final String packageName,    final MibValueSymbol entity, final Set<MibValueSymbol> commonIdentifiers) {
+    private JClass buildInterface(final String packageName, final MibValueSymbol entity,
+            final Set<MibValueSymbol> commonIdentifiers) {
         LOG.debug("build Interface:{}.{}", packageName, getInterfaceName(entity.getName()));
         final JDefinedClass definedInterface = createInterface(packageName, getInterfaceName(entity.getName()));
         definedInterface._extends(IDeviceEntity.class);
 
         definedInterface.metadata = new ClassMetadata(definedInterface);
 
-        // TODO SJ If it's a table and there is an interface for the corresponding entry, let the interface
+        // TODO SJ If it's a table and there is an interface for the
+        // corresponding entry, let the interface
         // extend ITableAccess<entryInterface>
 
         final IClassBuilder interfaceBuilder = new IClassBuilder() {
@@ -189,7 +194,8 @@ public class MibEntityCompiler extends AbstractMibCompiler {
             if (child != null && commonIdentifiers.contains(child)) {
                 LOG.debug("Identifier is common and will be included:{}", child);
 
-                // Establish type of field - this will create a new class if necessary.
+                // Establish type of field - this will create a new class if
+                // necessary.
                 final JType type = getFieldType(generateChildPackageName(packageName, entity.getName()), child,
                         interfaceBuilder);
                 if (type == null) {
@@ -237,8 +243,8 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         final JDefinedClass rootClass = createRootClass();
         final Map<String, JFieldVar> oidRootFieldMap = new HashMap<>();
 
-//        importDependencies();
-        
+        // importDependencies();
+
         for (final Entry<String, JDefinedClass> classEntry : classes.entrySet()) {
 
             final JDefinedClass topLevelClass = classEntry.getValue();
@@ -252,11 +258,12 @@ public class MibEntityCompiler extends AbstractMibCompiler {
                 final String fieldName = getUniqueClassIdentifier(topLevelClass);
                 final JFieldVar rootField = rootClass.field(JMod.PRIVATE, topLevelClass, fieldName);
                 oidRootFieldMap.put(classEntry.getKey(), rootField);
-                // Generate accessor methods, but no need for notify on root entity
+                // Generate accessor methods, but no need for notify on root
+                // entity
                 generateAccessors(rootClass, rootField.type(), fieldName, -1);
             }
         }
-        
+
         addStandardMethods(rootClass);
 
         generateGetRootsMethod(rootClass, oidRootFieldMap);
@@ -276,16 +283,16 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return decapitalizeFirstCharacter(name);
     }
 
-
     /**
      * Generate class with map, mapping OIDs to classes.
      */
-    private  void generateClassRegistry() {
+    private void generateClassRegistry() {
         final JDefinedClass registryClass = createClass(packageName, GeneratedIdentifiers.OID_REGISTRY_CLASSNAME);
 
         // Create TreeMap, initialised by call to static function.
         JClass typeVar = codeModel.ref(TreeMap.class);
-        typeVar = typeVar.narrow(OID.class).narrow(codeModel.ref(Class.class).narrow(codeModel.ref(DeviceEntity.class).wildcard()));
+        typeVar = typeVar.narrow(OID.class).narrow(
+                codeModel.ref(Class.class).narrow(codeModel.ref(DeviceEntity.class).wildcard()));
         final JFieldVar registryMap = registryClass.field(PUBLIC_FINAL_STATIC, typeVar, "oidRegistry");
 
         final JMethod initMethod = registryClass.method(JMod.STATIC | JMod.PRIVATE, typeVar, "createMap");
@@ -300,7 +307,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         for (final Entry<String, JDefinedClass> entry : oidClasses.entrySet()) {
 
             // Generate a put of the form:
-            //     map.put(new OID("1.2.3.3"), Pojo.class);
+            // map.put(new OID("1.2.3.3"), Pojo.class);
             final JInvocation putInvocation = initMethod.body().invoke(JExpr.ref("map"), "put");
 
             final JInvocation newInvocation = JExpr._new(oidTypeVar);
@@ -309,27 +316,30 @@ public class MibEntityCompiler extends AbstractMibCompiler {
             putInvocation.arg(newInvocation);
             putInvocation.arg(entry.getValue().dotclass());
         }
-        
+
         // Return the map.
         initMethod.body()._return(JExpr.ref("map"));
-        
+
     }
-    
-    public void importDependencies(){
+
+    public void importDependencies() {
         try {
-            final ImmutableSet<ClassPath.ClassInfo> classes = ClassPath.from(this.getClass().getClassLoader()).getAllClasses();
+            final ImmutableSet<ClassPath.ClassInfo> classes = ClassPath.from(this.getClass().getClassLoader())
+                    .getAllClasses();
             for (ClassPath.ClassInfo clazz : classes) {
-                if (clazz.getSimpleName().equals(GeneratedIdentifiers.OID_REGISTRY_CLASSNAME)){
+                if (clazz.getSimpleName().equals(GeneratedIdentifiers.OID_REGISTRY_CLASSNAME)) {
                     LOG.info("Adding OIDs from registry: {}", clazz.getName());
                     final Class loadedClass = this.getClass().getClassLoader().loadClass(clazz.getName());
                     final Field field = loadedClass.getDeclaredField("oidRegistry");
-                    final TreeMap<OID, Class<? extends DeviceEntity>> map = 
-                            (TreeMap<OID, Class<? extends DeviceEntity>>) field.get(null);
+                    final TreeMap<OID, Class<? extends DeviceEntity>> map = (TreeMap<OID, Class<? extends DeviceEntity>>) field
+                            .get(null);
                     for (Entry<OID, Class<? extends DeviceEntity>> entry : map.entrySet()) {
-                        if (!oidClasses.containsKey(entry.getKey().toString())){
-                            final String fullClassName = getFullClassName(entry.getValue().getPackage().getName(), entry.getValue().getSimpleName());
-                            if (codeModel._getClass(fullClassName) == null){
-                                final JDefinedClass importedClass = createClass(entry.getValue().getPackage().getName(), entry.getValue().getSimpleName());
+                        if (!oidClasses.containsKey(entry.getKey().toString())) {
+                            final String fullClassName = getFullClassName(entry.getValue().getPackage().getName(),
+                                    entry.getValue().getSimpleName());
+                            if (codeModel._getClass(fullClassName) == null) {
+                                final JDefinedClass importedClass = createClass(
+                                        entry.getValue().getPackage().getName(), entry.getValue().getSimpleName());
                                 final ClassMetadata metadata = new ClassMetadata(importedClass);
                                 final boolean isTableRow = IIndexed.class.isAssignableFrom(entry.getValue());
                                 metadata.setTableRow(isTableRow);
@@ -344,12 +354,12 @@ public class MibEntityCompiler extends AbstractMibCompiler {
                     }
                 }
             }
-        } catch (Exception ex) { 
+        } catch (Exception ex) {
             LOG.error("Exception adding classpath OIDS.", ex);
         }
     }
 
-    private  void generateGetRootsMethod(final JDefinedClass rootClass, final Map<String, JFieldVar> oidRootFieldMap) {
+    private void generateGetRootsMethod(final JDefinedClass rootClass, final Map<String, JFieldVar> oidRootFieldMap) {
         final JMethod method = rootClass.method(JMod.PUBLIC, codeModel._ref(DeviceEntity[].class), "getRoots");
 
         final JArray objectArray = JExpr.newArray(codeModel._ref(DeviceEntity.class));
@@ -367,10 +377,9 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         method.body()._return(objectArray);
     }
 
-
-
     /**
      * Create the root class.
+     * 
      * @return the root class
      */
     private JDefinedClass createRootClass() {
@@ -382,7 +391,8 @@ public class MibEntityCompiler extends AbstractMibCompiler {
     /**
      * Gets entity classes.
      *
-     * @return the list of full names of the entity classes generated from the MIB
+     * @return the list of full names of the entity classes generated from the
+     *         MIB
      */
     public final Map<String, JDefinedClass> getEntityClasses() {
         return oidClasses;
@@ -405,15 +415,17 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return classPackageName;
     }
 
-
     /**
-     * Build a class associated with a Mib Symbol, recursively creating any classes on which the class depends.
+     * Build a class associated with a Mib Symbol, recursively creating any
+     * classes on which the class depends.
+     * 
      * @param packageName
      * @param rootSymbol
      * @param parentClass
      * @return
      */
-    private  JDefinedClass buildClass(final String packageName, final MibValueSymbol rootSymbol, final JDefinedClass parentClass) {
+    private JDefinedClass buildClass(final String packageName, final MibValueSymbol rootSymbol,
+            final JDefinedClass parentClass) {
         LOG.debug(">>> buildClass package:{} class:{}", packageName, rootSymbol.getName());
 
         // Create the class, constructor and annotate.
@@ -466,17 +478,16 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return metadata;
     }
 
-
     /**
      * Create the child fields for the object.
+     * 
      * @param packageName
      * @param rootSymbol
      * @param parentClass
      * @return
      */
-    private List<MibValueSymbol> createChildFields(final String packageName,
-                                                   final MibValueSymbol rootSymbol,
-                                                   final JDefinedClass parentClass) {
+    private List<MibValueSymbol> createChildFields(final String packageName, final MibValueSymbol rootSymbol,
+            final JDefinedClass parentClass) {
         final MibValueSymbol[] children = rootSymbol.getChildren();
         final List<MibValueSymbol> childEntities = new ArrayList<>();
         final IClassBuilder classBuilder = new IClassBuilder() {
@@ -489,8 +500,10 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         for (final MibValueSymbol child : children) {
             if (child != null) {
 
-                // Establish type of field - this will create a new class if necessary.
-                final JType type = getFieldType(generateChildPackageName(packageName, rootSymbol.getName()), child, classBuilder);
+                // Establish type of field - this will create a new class if
+                // necessary.
+                final JType type = getFieldType(generateChildPackageName(packageName, rootSymbol.getName()), child,
+                        classBuilder);
                 if (type == null) {
                     LOG.debug("Not generating empty entity:{}", child.getName());
                 } else {
@@ -503,45 +516,47 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return childEntities;
     }
 
-
     /**
      * Establishes the relationship from a table row entry to its parent table
+     * 
      * @param definedClass
      * @param parentClass
      */
-    private void createRelationshipToTable(final JDefinedClass definedClass,
-                                           final JDefinedClass parentClass) {
+    private void createRelationshipToTable(final JDefinedClass definedClass, final JDefinedClass parentClass) {
 
         final JFieldVar tableVar = definedClass.field(JMod.PRIVATE, parentClass, PARENT_ENTITY_IDENTIFIER);
 
-        // Define setTable method signature: public void _setTable(tableClass table)
-        final JMethod setMethod = definedClass.method(JMod.PUBLIC, codeModel.VOID, GeneratedIdentifiers.METHOD_SET_TABLE);
+        // Define setTable method signature: public void _setTable(tableClass
+        // table)
+        final JMethod setMethod = definedClass.method(JMod.PUBLIC, codeModel.VOID,
+                GeneratedIdentifiers.METHOD_SET_TABLE);
         final JVar tableParameter = setMethod.param(parentClass, "table");
 
         final JBlock body = setMethod.body();
         body.assign(JExpr._this().ref(tableVar), tableParameter);
     }
 
-
-
     /**
-     * Creates index details if the symbol defines an indexed object (i.e. one that resides in a table).
+     * Creates index details if the symbol defines an indexed object (i.e. one
+     * that resides in a table).
+     * 
      * @param rootSymbol
      * @param definedClass
      */
-    private void createIndexMethod(final MibValueSymbol rootSymbol,
-                                    final JDefinedClass definedClass) {
+    private void createIndexMethod(final MibValueSymbol rootSymbol, final JDefinedClass definedClass) {
 
         LOG.debug("createIndexMethod root:{} class:{}", rootSymbol, definedClass);
 
         // Get the index details retrieved from the MIB
         final ArrayList<SnmpIndex> indices = getIndexInformation(rootSymbol);
 
-        // Make the class implement IIndexed, with a method to set its index from an OID.
+        // Make the class implement IIndexed, with a method to set its index
+        // from an OID.
         definedClass._implements(IIndexed.class);
 
-        //==============================================================================================
-        // Creates a public method to set the index variables of an entity, given an OID of an
+        // ==============================================================================================
+        // Creates a public method to set the index variables of an entity,
+        // given an OID of an
         // instance of any of the variables in the entity.
         //
         // Example:
@@ -549,40 +564,44 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         // and the OID of the entity is: 1.4.5.100.1.2
         // the body of the method would look something like:
         //
-        //     byte[] oidBytes = oid.toByteArray();
-        //     int[] oidInts = oid.toIntArray();
-        //     int index = 7; // the offset of the first sub-identifier of the index
-        //     int len;       // length of String index
+        // byte[] oidBytes = oid.toByteArray();
+        // int[] oidInts = oid.toIntArray();
+        // int index = 7; // the offset of the first sub-identifier of the index
+        // int len; // length of String index
         //
-        //     // Get index field intField1
-        //     setIntField1(oidInts[n]);  // See notes
-        //     n++;
-        //     // Get index field stringField
-        //     len = oidInts[n];
-        //     n++
-        //     setStringField(new String(oidBytes, n, len)); // See notes
-        //     n = n + len;
-        //     // Get index field intField1
-        //     setIntField2(oidInts[n]); // See notes
-        //     n++;
+        // // Get index field intField1
+        // setIntField1(oidInts[n]); // See notes
+        // n++;
+        // // Get index field stringField
+        // len = oidInts[n];
+        // n++
+        // setStringField(new String(oidBytes, n, len)); // See notes
+        // n = n + len;
+        // // Get index field intField1
+        // setIntField2(oidInts[n]); // See notes
+        // n++;
         //
         // So, presented with the OID: 1.4.5.100.1.2.1.17.3.65.66.67.18
         // it will assign:
-        //    17 to intField1
-        //    ABC to stringField
-        //    18 to intField2
+        // 17 to intField1
+        // ABC to stringField
+        // 18 to intField2
         //
         // Notes
-        // - we only need to call the set method for those indexes that are local to the entry that is
-        //   being indexed.
-        //==============================================================================================
+        // - we only need to call the set method for those indexes that are
+        // local to the entry that is
+        // being indexed.
+        // ==============================================================================================
 
         // Define the method signature: public void _setIndex(OID oid)
-        final JMethod setMethod = definedClass.method(JMod.PUBLIC, codeModel.VOID, GeneratedIdentifiers.METHOD_SET_INDEX);
+        final JMethod setMethod = definedClass.method(JMod.PUBLIC, codeModel.VOID,
+                GeneratedIdentifiers.METHOD_SET_INDEX);
         final JVar oidParam = setMethod.param(OID.class, "oid");
 
-        // Establish the zero-based sub-identifier in the OID that defines the first index value.
-        // This will be the length of the OID for the containing object + 1 (allowing for the sub-identifier
+        // Establish the zero-based sub-identifier in the OID that defines the
+        // first index value.
+        // This will be the length of the OID for the containing object + 1
+        // (allowing for the sub-identifier
         // that identifies the variable being updated by the OID.
         final int elementOffset = getOidPartCount(rootSymbol) + 1;
 
@@ -607,13 +626,9 @@ public class MibEntityCompiler extends AbstractMibCompiler {
 
     }
 
-    private void createIndexPartAssignments(final MibValueSymbol rootSymbol,
-                                            final ArrayList<SnmpIndex> indices,
-                                            final JBlock body,
-                                            final JVar byteArrayVar,
-                                            final JVar intArrayVar,
-                                            final JVar arrayOffsetVar,
-                                            final JVar lenVar) {
+    private void createIndexPartAssignments(final MibValueSymbol rootSymbol, final ArrayList<SnmpIndex> indices,
+            final JBlock body, final JVar byteArrayVar, final JVar intArrayVar, final JVar arrayOffsetVar,
+            final JVar lenVar) {
         for (final SnmpIndex index : indices) {
 
             // Get the child variable for this index
@@ -621,7 +636,8 @@ public class MibEntityCompiler extends AbstractMibCompiler {
             MibValueSymbol indexField = getChildByOid(rootSymbol, (ObjectIdentifierValue) index.getValue());
 
             boolean isLocalIndex = false;
-            // If the index field is not part of the entry itself, look for it across all the mibs.
+            // If the index field is not part of the entry itself, look for it
+            // across all the mibs.
             if (indexField == null) {
                 indexField = getSymbolByOid(rootSymbol, (ObjectIdentifierValue) index.getValue());
             } else {
@@ -637,27 +653,23 @@ public class MibEntityCompiler extends AbstractMibCompiler {
                     createIntegerIndexPartAssignment(body, intArrayVar, arrayOffsetVar, indexFieldName, isLocalIndex);
 
                 } else if (indexType == codeModel.ref(String.class)) {
-                    createStringIndexPartAssignment(body, byteArrayVar, intArrayVar, arrayOffsetVar, lenVar, index, indexFieldName, indexField, isLocalIndex);
+                    createStringIndexPartAssignment(body, byteArrayVar, intArrayVar, arrayOffsetVar, lenVar, index,
+                            indexFieldName, indexField, isLocalIndex);
 
                 } else {
                     LOG.warn("Ignoring non-integer index:{} type:{}", index.getValue(), indexType);
                 }
             } else {
-                LOG.warn("Failed to find index field:{} referenced by:{}", index.getValue(), getOidFromSymbol(rootSymbol));
+                LOG.warn("Failed to find index field:{} referenced by:{}", index.getValue(),
+                        getOidFromSymbol(rootSymbol));
             }
         }
     }
 
     @SuppressWarnings("checkstyle:parameternumber")
-    private void createStringIndexPartAssignment(final JBlock body,
-                                                 final JVar byteArrayVar,
-                                                 final JVar intArrayVar,
-                                                 final JVar arrayOffsetVar,
-                                                 final JVar lenVar,
-                                                 final SnmpIndex index,
-                                                 final String indexFieldName,
-                                                 final MibValueSymbol indexField,
-                                                 final boolean isLocalIndex) {
+    private void createStringIndexPartAssignment(final JBlock body, final JVar byteArrayVar, final JVar intArrayVar,
+            final JVar arrayOffsetVar, final JVar lenVar, final SnmpIndex index, final String indexFieldName,
+            final MibValueSymbol indexField, final boolean isLocalIndex) {
         // Determine how to extract String values from indexfield
         final IIndexFieldConverter indexConverter = getIndexConverter(indexField);
 
@@ -666,10 +678,11 @@ public class MibEntityCompiler extends AbstractMibCompiler {
                 LOG.debug("implied length");
                 // Implied length string.
                 // Generate:
-                //     len = oidBytes.length - _index;
+                // len = oidBytes.length - _index;
                 // followed by one of:
-                // o   setIndexName(new String(oidBytes, _index, len));
-                // o   setIndexName(_getObjectIdentifier(oidInts, _index, len)); - for an object identifier
+                // o setIndexName(new String(oidBytes, _index, len));
+                // o setIndexName(_getObjectIdentifier(oidInts, _index, len)); -
+                // for an object identifier
                 body.assign(lenVar, byteArrayVar.ref("length").minus(arrayOffsetVar));
                 final JInvocation setterInvocation = body.invoke(getSetterName(indexFieldName));
                 setterInvocation.arg(indexConverter.convert(byteArrayVar, intArrayVar, lenVar, arrayOffsetVar));
@@ -680,12 +693,13 @@ public class MibEntityCompiler extends AbstractMibCompiler {
             if (stringLength == -1) {
                 // Variable length string.
                 // Generate:
-                //     len = oidBytes[_index++];
+                // len = oidBytes[_index++];
                 // followed by one of:
-                // o   setIndexName(new String(oidBytes, _index, len));
-                // o   setIndexName(_getObjectIdentifier(oidInts, _index, len)); - for an object identifier
+                // o setIndexName(new String(oidBytes, _index, len));
+                // o setIndexName(_getObjectIdentifier(oidInts, _index, len)); -
+                // for an object identifier
                 // followd by:
-                //     _index += len;
+                // _index += len;
                 body.assign(lenVar, intArrayVar.component(arrayOffsetVar.incr()));
                 if (isLocalIndex) {
                     final JInvocation setterInvocation = body.invoke(getSetterName(indexFieldName));
@@ -702,17 +716,19 @@ public class MibEntityCompiler extends AbstractMibCompiler {
                     final JInvocation setterInvocation = body.invoke(getSetterName(indexField));
                     final JInvocation newString = JExpr._new(codeModel.ref(String.class));
                     newString.arg(byteArrayVar).arg(arrayOffsetVar).arg(JExpr.lit(stringLength));
-                    setterInvocation.arg(indexConverter.convert(byteArrayVar, intArrayVar, JExpr.lit(stringLength), arrayOffsetVar));
+                    setterInvocation.arg(indexConverter.convert(byteArrayVar, intArrayVar, JExpr.lit(stringLength),
+                            arrayOffsetVar));
                 }
                 body.assignPlus(arrayOffsetVar, JExpr.lit(stringLength));
             }
         }
     }
 
-    private void createIntegerIndexPartAssignment(final JBlock body, final JVar intArrayVar, final JVar arrayOffsetVar, final String indexFieldName, final boolean isLocalIndex) {
+    private void createIntegerIndexPartAssignment(final JBlock body, final JVar intArrayVar, final JVar arrayOffsetVar,
+            final String indexFieldName, final boolean isLocalIndex) {
         // Call the setter for the index variable, for example:
-        //    setIndexName(oidBytes[_index]);
-        //    _index++;
+        // setIndexName(oidBytes[_index]);
+        // _index++;
         if (isLocalIndex) {
             final JInvocation setterInvocation = body.invoke(getSetterName(indexFieldName));
             setterInvocation.arg(intArrayVar.component(arrayOffsetVar));
@@ -720,29 +736,27 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         body.assignPlus(arrayOffsetVar, JExpr.lit(1));
     }
 
-    private void saveIndexAsString(final JDefinedClass definedClass, final JBlock body, final int elementOffset, final JVar intArrayVar, final JVar oidParam) {
+    private void saveIndexAsString(final JDefinedClass definedClass, final JBlock body, final int elementOffset,
+            final JVar intArrayVar, final JVar oidParam) {
 
         final JVar indexVar = definedClass.field(JMod.PRIVATE, codeModel.ref(String.class), "_index");
 
         // Generate statement of the form:
-        // _index  = new OID(intArray, 14, oid.size() - 14).toString()
-        body.assign(indexVar,
-                JExpr._new(codeModel.ref(OID.class))
-                    .arg(intArrayVar)
-                    .arg(JExpr.lit(elementOffset))
-                    .arg(oidParam.invoke("size").minus(JExpr.lit(elementOffset)))
-                .invoke("toString"));
+        // _index = new OID(intArray, 14, oid.size() - 14).toString()
+        body.assign(
+                indexVar,
+                JExpr._new(codeModel.ref(OID.class)).arg(intArrayVar).arg(JExpr.lit(elementOffset))
+                        .arg(oidParam.invoke("size").minus(JExpr.lit(elementOffset))).invoke("toString"));
 
         // Create method to return the index.
         definedClass.method(JMod.PUBLIC, codeModel.ref(String.class), "_getIndex").body()._return(indexVar);
     }
 
-
     /**
      * Retrieve the index information associated with a managed object.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    private  ArrayList<SnmpIndex> getIndexInformation(final MibValueSymbol rootSymbol) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private ArrayList<SnmpIndex> getIndexInformation(final MibValueSymbol rootSymbol) {
         final SnmpObjectType objectType = (SnmpObjectType) rootSymbol.getType();
         final ArrayList indices = objectType.getIndex();
 
@@ -750,14 +764,14 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return indices;
     }
 
-
     /**
      * Find the child of a parent, matching a specified OID.
+     * 
      * @param rootSymbol
      * @param targetId
      * @return
      */
-    private  MibValueSymbol getChildByOid(final MibValueSymbol rootSymbol, final ObjectIdentifierValue targetId) {
+    private MibValueSymbol getChildByOid(final MibValueSymbol rootSymbol, final ObjectIdentifierValue targetId) {
         for (final MibValueSymbol child : rootSymbol.getChildren()) {
             if (child != null) {
                 final ObjectIdentifierValue childId = (ObjectIdentifierValue) child.getValue();
@@ -769,18 +783,16 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return null;
     }
 
-
     /**
      * Create field in a class.
+     * 
      * @param child
      * @param fieldName
      * @param type
      * @param definedClass
      */
-    private void createField(final MibValueSymbol child,
-                                final String fieldName,
-                                final JType type,
-                                final JDefinedClass definedClass) {
+    private void createField(final MibValueSymbol child, final String fieldName, final JType type,
+            final JDefinedClass definedClass) {
 
         LOG.debug("Add field {} to class {}", fieldName, definedClass);
 
@@ -797,10 +809,10 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         generateAccessors(definedClass, child, type, fieldName);
     }
 
-
     /**
-     * Determine the field implementation type.
-     * If a long/integer type has a default value, use Integer/Long rather than the primitive type.
+     * Determine the field implementation type. If a long/integer type has a
+     * default value, use Integer/Long rather than the primitive type.
+     * 
      * @param child
      * @param type
      * @return
@@ -820,7 +832,8 @@ public class MibEntityCompiler extends AbstractMibCompiler {
     private void createClassPersistenceAnnotations(final JDefinedClass definedClass, final MibValueSymbol rootSymbol) {
 
         if (!rootSymbol.isTableRow()) {
-            final JFieldVar parentField = definedClass.field(JMod.PRIVATE, AbstractRootEntity.class, PARENT_ENTITY_IDENTIFIER);
+            final JFieldVar parentField = definedClass.field(JMod.PRIVATE, AbstractRootEntity.class,
+                    PARENT_ENTITY_IDENTIFIER);
 
             final JMethod setMethod = definedClass.method(JMod.PUBLIC, codeModel.VOID, "set_ParentEntity");
             final JVar parentParam = setMethod.param(AbstractRootEntity.class, "parent");
@@ -839,14 +852,13 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return false;
     }
 
-
     /**
      * Generate methods to access table entries.
+     * 
      * @param definedClass
      * @param entrySymbol
      */
-    private void generateTableAccessMethods(final JDefinedClass definedClass,
-                                         final MibValueSymbol entrySymbol) {
+    private void generateTableAccessMethods(final JDefinedClass definedClass, final MibValueSymbol entrySymbol) {
 
         final String entryName = getMappedName(entrySymbol.getName());
         final JDefinedClass entryClass = getClassFromOid(entrySymbol);
@@ -861,7 +873,6 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         generateCreateEntryMethod(definedClass, entryClass, getOidFromSymbol(entrySymbol));
     }
 
-
     private JDefinedClass getInterfaceForSymbol(final MibValueSymbol entrySymbol) {
         if (interfaceMap != null) {
             return interfaceMap.get(getOidFromSymbol(entrySymbol));
@@ -869,8 +880,8 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return null;
     }
 
-    private void generateCreateEntryMethod(final JDefinedClass definedClass,
-                                            final JDefinedClass entryClass, final String entryOid) {
+    private void generateCreateEntryMethod(final JDefinedClass definedClass, final JDefinedClass entryClass,
+            final String entryOid) {
 
         final JMethod createMethod = definedClass.method(JMod.PUBLIC, entryClass, "createEntry");
         final JVar entryIndex = createMethod.param(String.class, "entryIndex");
@@ -878,37 +889,35 @@ public class MibEntityCompiler extends AbstractMibCompiler {
 
         // Method will look like:
         //
-        //    public T createEntry(String index) {
-        //        T newEntry = new T();
-        //        newEntry._setIndex(new OID(tableOID + ".0." + index));
-        //        setEntry(index, newEntry);
-        //        return newEntry;
-        //    }
-        //    Note that the index is set before the entry is added to the table.
-        //    This means that property change events will NOT be fired by any changes made by
-        //    the _setIndex method.
+        // public T createEntry(String index) {
+        // T newEntry = new T();
+        // newEntry._setIndex(new OID(tableOID + ".0." + index));
+        // setEntry(index, newEntry);
+        // return newEntry;
+        // }
+        // Note that the index is set before the entry is added to the table.
+        // This means that property change events will NOT be fired by any
+        // changes made by
+        // the _setIndex method.
 
         final JVar newEntry = body.decl(entryClass, "newEntry").init(JExpr._new(entryClass));
-        body.invoke(newEntry, GeneratedIdentifiers.METHOD_SET_INDEX)
-            .arg(JExpr._new(codeModel.ref(OID.class))
-                .arg(JExpr.lit(entryOid).plus(JExpr.lit(".0.").plus(entryIndex))));
+        body.invoke(newEntry, GeneratedIdentifiers.METHOD_SET_INDEX).arg(
+                JExpr._new(codeModel.ref(OID.class)).arg(JExpr.lit(entryOid).plus(JExpr.lit(".0.").plus(entryIndex))));
         body.invoke("setEntry").arg(entryIndex).arg(newEntry);
         body._return(newEntry);
     }
 
-    private void generateSetEntryMethod(final JDefinedClass definedClass,
-                                        final String entryName,
-                                        final JDefinedClass interfaceClass,
-                                        final JDefinedClass entryClass) {
+    private void generateSetEntryMethod(final JDefinedClass definedClass, final String entryName,
+            final JDefinedClass interfaceClass, final JDefinedClass entryClass) {
         final JMethod setMethod = definedClass.method(JMod.PUBLIC, codeModel.VOID, "setEntry");
         final JVar keyVar = setMethod.param(String.class, "key");
         final JVar valueVar = setMethod.param(interfaceClass, "value");
 
         setMethod.body().invoke(JExpr.ref(entryName), "put").arg(keyVar).arg(valueVar);
-        setMethod.body().invoke(JExpr.cast(entryClass, valueVar), GeneratedIdentifiers.METHOD_SET_TABLE).arg(JExpr._this());
+        setMethod.body().invoke(JExpr.cast(entryClass, valueVar), GeneratedIdentifiers.METHOD_SET_TABLE)
+                .arg(JExpr._this());
         setMethod.body().invoke("addChild").arg(valueVar);
     }
-
 
     private void generateGetEntryMethod(final JDefinedClass definedClass, final String entryName,
             final JDefinedClass entryClass) {
@@ -924,11 +933,11 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         getMethod.body()._return(JExpr.ref(entryName));
     }
 
-    private  JDefinedClass getClassFromOid(final MibValueSymbol child) {
+    private JDefinedClass getClassFromOid(final MibValueSymbol child) {
         return oidClasses.get(getOidFromSymbol(child));
     }
 
-    private  JDefinedClass getInterfaceFromOid(final MibValueSymbol entity) {
+    private JDefinedClass getInterfaceFromOid(final MibValueSymbol entity) {
         JDefinedClass interfaceClass = getInterfaceForSymbol(entity);
         if (interfaceClass == null) {
             interfaceClass = getClassFromOid(entity);
@@ -937,8 +946,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
     }
 
     private void generateSetFromVariableBindingMethod(final JDefinedClass definedClass,
-                                                      final MibValueSymbol rootSymbol,
-                                                      final List<MibValueSymbol> childEntities) {
+            final MibValueSymbol rootSymbol, final List<MibValueSymbol> childEntities) {
         final JMethod setMethod = definedClass.method(JMod.PUBLIC, codeModel.VOID, "set");
         final JVar binding = setMethod.param(VariableBinding.class, "binding");
 
@@ -959,7 +967,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         }
     }
 
-    private  JExpression getValueFromVariableBinding(final JVar binding, final MibValueSymbol child) {
+    private JExpression getValueFromVariableBinding(final JVar binding, final MibValueSymbol child) {
         final JInvocation getValueInvocation = JExpr.invoke(binding, "getVariable");
         if (mapObjectTypeToJavaType(child.getType()) == codeModel.INT) {
             return getValueInvocation.invoke("toInt");
@@ -969,43 +977,47 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return getValueInvocation.invoke("toString");
     }
 
-
     /**
-     * Generate an expression to deliver the part of the OID that delivers the type of the variable in the object.
+     * Generate an expression to deliver the part of the OID that delivers the
+     * type of the variable in the object.
+     * 
      * @param oidVar
      * @param rootSymbol
      * @return
      */
-    private  JExpression generateGetVariableIdentifier(final JExpression oidVar, final MibValueSymbol rootSymbol) {
+    private JExpression generateGetVariableIdentifier(final JExpression oidVar, final MibValueSymbol rootSymbol) {
         final int partCount = getOidPartCount(rootSymbol);
         final JInvocation call = JExpr.invoke(oidVar, "get");
         call.arg(JExpr.lit(partCount));
         return call;
     }
 
-
     /**
      * Generate get and set methods for named field of specified type.
+     * 
      * @param definedClass
      * @param type
      * @param field
      * @param fieldId
      */
-    private  void generateAccessors(final JDefinedClass definedClass, final JType type, final String field, final int fieldId) {
+    private void generateAccessors(final JDefinedClass definedClass, final JType type, final String field,
+            final int fieldId) {
         generateGetAccessor(null, definedClass, type, field);
         generateSetAccessor(definedClass, type, field, fieldId, true);
     }
 
-
     /**
-     * Establish Java field type that corresponds to a MibValueSymbol, creating a class, if necessary.
-     * Null is returned if the field is an object that has no variables in its tree.
+     * Establish Java field type that corresponds to a MibValueSymbol, creating
+     * a class, if necessary. Null is returned if the field is an object that
+     * has no variables in its tree.
+     * 
      * @param extendPackageName
      * @param child
      * @param classBuilder
      * @return
      */
-    private  JType getFieldType(final String extendPackageName, final MibValueSymbol child, final IClassBuilder classBuilder) {
+    private JType getFieldType(final String extendPackageName, final MibValueSymbol child,
+            final IClassBuilder classBuilder) {
 
         // If it's scalar or a table column, expect a simple java type.
         if (isSimpleType(child)) {
@@ -1016,7 +1028,8 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         if (child.isTableRow()) {
             final JClass type = classBuilder.buildCodeForClass(extendPackageName, child);
 
-            // If the new class is part of a table, create a collection type for it.
+            // If the new class is part of a table, create a collection type for
+            // it.
             if (child.isTableRow()) {
                 final JDefinedClass resolvedType = getInterfaceFromOid(child);
                 return getTableCollectionType(resolvedType);
@@ -1026,28 +1039,27 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return null;
     }
 
-
-
     /**
      * Create a Collection<type> java type.
+     * 
      * @param clazz
      * @return
      */
-    private  JType getTableCollectionType(final JClass clazz) {
+    private JType getTableCollectionType(final JClass clazz) {
         final JClass typeVar = codeModel.ref(Map.class);
         return typeVar.narrow(codeModel.ref(String.class), clazz);
     }
 
-
     /**
      * Return length of fixed length String type, or -1 if it's not fixed.
+     * 
      * @param type
      * @return
      */
     private int getIndexStringLength(final MibType type) {
         StringType objectType = null;
         if (((SnmpObjectType) type).getSyntax() instanceof ChoiceType) {
-            objectType =  (StringType) ((ChoiceType) ((SnmpObjectType) type).getSyntax()).getAllElements()[0].getType();
+            objectType = (StringType) ((ChoiceType) ((SnmpObjectType) type).getSyntax()).getAllElements()[0].getType();
             LOG.debug("resolved : {}", objectType.getClass());
         } else if (((SnmpObjectType) type).getSyntax() instanceof StringType) {
             objectType = (StringType) ((SnmpObjectType) type).getSyntax();
@@ -1073,46 +1085,46 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return -1;
     }
 
-
     /**
      * Get a standard interface name from a Mib name.
+     * 
      * @param name
      * @return
      */
-    private  String getInterfaceName(final String name) {
+    private String getInterfaceName(final String name) {
         return INTERFACE_PREFIX + getClassName(name);
     }
 
-
     /**
      * Deliver the name of the set method of a variable, given its MIB symbol
+     * 
      * @param symbol
      * @return
      */
-    private  String getSetterName(final MibValueSymbol symbol) {
+    private String getSetterName(final MibValueSymbol symbol) {
         return getSetterName(getMappedName(symbol.getName()));
     }
 
-
     /**
      * Decapitalise first character of the specified name.
+     * 
      * @param name
      * @return
      */
-    private  String decapitalizeFirstCharacter(final String name) {
+    private String decapitalizeFirstCharacter(final String name) {
         final StringBuilder sb = new StringBuilder(name);
         final char firstChar = sb.charAt(0);
         sb.setCharAt(0, Character.toLowerCase(firstChar));
         return sb.toString();
     }
 
-
     /**
      * Map OID to class name.
+     * 
      * @param rootSymbol
      * @param definedClass
      */
-    private  void addToOidClassMap(final MibValueSymbol rootSymbol, final JDefinedClass definedClass) {
+    private void addToOidClassMap(final MibValueSymbol rootSymbol, final JDefinedClass definedClass) {
         oidClasses.put(getOidFromSymbol(rootSymbol), definedClass);
 
         // Determine if this is a duplicate class name.
@@ -1127,13 +1139,13 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         }
     }
 
-
     /**
      * Get the number of sub-identifiers that make up the OID.
+     * 
      * @param symbol
      * @return
      */
-    private  int getOidPartCount(final MibValueSymbol symbol) {
+    private int getOidPartCount(final MibValueSymbol symbol) {
         final ObjectIdentifierValue value = (ObjectIdentifierValue) symbol.getValue();
         return value.toString().split("\\.").length;
     }
@@ -1157,14 +1169,13 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         return defaultConverter;
     }
 
-
     private interface IIndexFieldConverter {
         /**
          * Convert j expression.
          *
          * @param byteArray the byte array
-         * @param intArray  the int array
-         * @param lenVar    the len var
+         * @param intArray the int array
+         * @param lenVar the len var
          * @param offsetVar the offset var
          * @return the j expression
          */
@@ -1173,19 +1184,23 @@ public class MibEntityCompiler extends AbstractMibCompiler {
 
     private final IIndexFieldConverter objectIdentifierConverter = new IIndexFieldConverter() {
         @Override
-        public JExpression convert(final JVar byteArray, final JVar intArray, final JExpression lenVar, final JExpression offsetVar) {
-            return JExpr.invoke(GeneratedIdentifiers.METHOD_GET_OBJECT_IDENTIFIER).arg(intArray).arg(offsetVar).arg(lenVar);
+        public JExpression convert(final JVar byteArray, final JVar intArray, final JExpression lenVar,
+                final JExpression offsetVar) {
+            return JExpr.invoke(GeneratedIdentifiers.METHOD_GET_OBJECT_IDENTIFIER).arg(intArray).arg(offsetVar)
+                    .arg(lenVar);
         }
     };
     private final IIndexFieldConverter macAddressConverter = new IIndexFieldConverter() {
         @Override
-        public JExpression convert(final JVar byteArray, final JVar intArray, final JExpression lenVar, final JExpression offsetVar) {
+        public JExpression convert(final JVar byteArray, final JVar intArray, final JExpression lenVar,
+                final JExpression offsetVar) {
             return JExpr.invoke(GeneratedIdentifiers.METHOD_GET_MACADDRESS).arg(intArray).arg(offsetVar).arg(lenVar);
         }
     };
     private final IIndexFieldConverter defaultConverter = new IIndexFieldConverter() {
         @Override
-        public JExpression convert(final JVar byteArray, final JVar intArray, final JExpression lenVar, final JExpression offsetVar) {
+        public JExpression convert(final JVar byteArray, final JVar intArray, final JExpression lenVar,
+                final JExpression offsetVar) {
             return JExpr._new(codeModel.ref(String.class)).arg(byteArray).arg(offsetVar).arg(lenVar);
         }
     };
@@ -1195,7 +1210,7 @@ public class MibEntityCompiler extends AbstractMibCompiler {
          * Build code for class j class.
          *
          * @param packageName the package name
-         * @param entity      the entity
+         * @param entity the entity
          * @return the j class
          */
         JClass buildCodeForClass(String packageName, MibValueSymbol entity);
@@ -1255,4 +1270,3 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         }
     }
 }
-

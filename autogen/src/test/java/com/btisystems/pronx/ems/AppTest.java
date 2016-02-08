@@ -1,6 +1,5 @@
 package com.btisystems.pronx.ems;
 
-
 import net.percederberg.mibble.MibSymbol;
 import net.percederberg.mibble.MibValueSymbol;
 import net.percederberg.mibble.MibValue;
@@ -14,13 +13,16 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
 public class AppTest {
 
-    @Mock private MibValueSymbol mockSymbol1;
-    @Mock private MibValueSymbol mockSymbol2;
-    @Mock private MibValue mockValue1;
-    @Mock private MibValue mockValue2;
+    @Mock
+    private MibValueSymbol mockSymbol1;
+    @Mock
+    private MibValueSymbol mockSymbol2;
+    @Mock
+    private MibValue mockValue1;
+    @Mock
+    private MibValue mockValue2;
 
     @Before
     public void setUp() throws Exception {
@@ -39,7 +41,6 @@ public class AppTest {
         Mockito.when(mockSymbol2.getValue()).thenReturn(mockValue1);
         Mockito.when(mockSymbol1.getName()).thenReturn("Symbol");
         Mockito.when(mockSymbol2.getName()).thenReturn("Symbol");
-
 
         assertTrue(App.areEntitiesEquivalent(mockSymbol1, mockSymbol2));
     }

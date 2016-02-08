@@ -66,7 +66,7 @@ import java.util.Set;
 /**
  * autogen application - mib compiler.
  */
-public class    App {
+public class App {
 
     private static final String DEFAULT_CONTEXT = "src/main/resources/defaultConfiguration.xml";
 
@@ -113,14 +113,17 @@ public class    App {
 
     private static void deleteImportedSource() throws IOException {
         for (final String importedPackage : MibEntityCompiler.IMPORTED_PACKAGES) {
-            LOG.debug("Deleting: {}", properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP));
-            FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP)));
+            LOG.debug("Deleting: {}",
+                    properties.getProperty("target-directory") + FILE_SEP + importedPackage.replaceAll("\\.", FILE_SEP));
+            FileUtils.deleteDirectory(new File(properties.getProperty("target-directory") + FILE_SEP
+                    + importedPackage.replaceAll("\\.", FILE_SEP)));
         }
     }
 
-
     /**
-     * Process command line options, delivering array of mib files to be processed.
+     * Process command line options, delivering array of mib files to be
+     * processed.
+     * 
      * @param args command line args
      * @return
      */
@@ -159,6 +162,7 @@ public class    App {
 
     /**
      * Load and process each of the Mib files.
+     * 
      * @param groupList List of Device Groups
      */
     private static void processMibFiles(final List<DeviceGroup> groupList) {
@@ -191,6 +195,7 @@ public class    App {
 
     /**
      * Load mibs from list of source files.
+     * 
      * @param group DeviceGroup
      * @param loader Mib Loader
      * @param source Mib Source
@@ -198,13 +203,14 @@ public class    App {
      * @return
      */
     private static Collection<String> compileMibs(final DeviceGroup group, final MibLoader loader,
-                                                  final MibSource source, final Map<String, JDefinedClass> interfaceMap) {
+            final MibSource source, final Map<String, JDefinedClass> interfaceMap) {
 
         // Get complete package name using group + source.
         final String packageName = buildPackageName(group.getPackageName(), source.getPackageName());
 
         final List<MibValueSymbol> rootSymbols = locateRootSymbols(loader, source.getRootObjects());
-        final Map<String, List<MibValueSymbol>> symbolMap = locateChildSymbols(rootSymbols, source.getExcludedRootObjects());
+        final Map<String, List<MibValueSymbol>> symbolMap = locateChildSymbols(rootSymbols,
+                source.getExcludedRootObjects());
 
         final MibEntityCompiler compiler = new MibEntityCompiler(symbolMap, packageName, interfaceMap, codeModel);
 
@@ -230,9 +236,11 @@ public class    App {
         return compiler.generateRootEntity(classes);
     }
 
-    private static void compileNotifications(final MibLoader loader, final String packageName, final boolean generateNotificationObjects) {
+    private static void compileNotifications(final MibLoader loader, final String packageName,
+            final boolean generateNotificationObjects) {
         if (generateNotificationObjects) {
-            final MibNotificationObjectCompiler notificationObjectCompiler = new MibNotificationObjectCompiler(loader, packageName);
+            final MibNotificationObjectCompiler notificationObjectCompiler = new MibNotificationObjectCompiler(loader,
+                    packageName);
             notificationObjectCompiler.compile(codeModel);
 
         }
@@ -247,7 +255,8 @@ public class    App {
         if (Files.notExists(notificationRegistryDir.toPath())) {
             notificationRegistryDir.mkdirs();
         }
-        try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(notificationRegistryDoc)))) {
+        try (XMLEncoder encoder = new XMLEncoder(
+                new BufferedOutputStream(new FileOutputStream(notificationRegistryDoc)))) {
             encoder.writeObject(meta);
             encoder.writeObject(meta);
         } catch (final Exception e) {
@@ -260,7 +269,7 @@ public class    App {
     }
 
     private static void registerEntities(final Map<String, Map<String, List<MibValueSymbol>>> groupEntities,
-                                         final Map<String, List<MibValueSymbol>> symbolMap) {
+            final Map<String, List<MibValueSymbol>> symbolMap) {
         for (final Entry<String, List<MibValueSymbol>> rootSymbolListEntry : symbolMap.entrySet()) {
             final String rootOid = rootSymbolListEntry.getKey();
             Map<String, List<MibValueSymbol>> groupRootSymbolMap = groupEntities.get(rootOid);
@@ -342,11 +351,14 @@ public class    App {
     }
 
     /**
-     * Determine which symbols should be included in the interfaces (because they are common across all implementations.
+     * Determine which symbols should be included in the interfaces (because
+     * they are common across all implementations.
+     * 
      * @param list Mib Value Symbols
      * @param commonIdentifiers Mib Value Symbol
      */
-    private static void getCommonIdentifiers(final List<MibValueSymbol> list, final Set<MibValueSymbol> commonIdentifiers) {
+    private static void getCommonIdentifiers(final List<MibValueSymbol> list,
+            final Set<MibValueSymbol> commonIdentifiers) {
 
         boolean isTable = false;
         MibValueSymbol[] identifiersToCheck;
@@ -361,7 +373,8 @@ public class    App {
         for (final MibValueSymbol anIdentifierToCheck : identifiersToCheck) {
             boolean isCommon = true;
             for (int entityIndex = 1; entityIndex < list.size(); entityIndex++) {
-                final MibValueSymbol[] identifiersToCompare = isTable ? list.get(entityIndex).getChild(0).getChildren() : list.get(entityIndex).getChildren();
+                final MibValueSymbol[] identifiersToCompare = isTable ? list.get(entityIndex).getChild(0).getChildren()
+                        : list.get(entityIndex).getChildren();
                 if (!listContainsEquivalentChild(anIdentifierToCheck, identifiersToCompare)) {
                     isCommon = false;
                     break;
@@ -373,8 +386,7 @@ public class    App {
         }
     }
 
-    private static String buildPackageName(final String rootName,
-                                           final String childName) {
+    private static String buildPackageName(final String rootName, final String childName) {
         String builtName;
         if (childName != null && childName.length() > 0) {
             builtName = rootName + "." + childName;
@@ -385,16 +397,18 @@ public class    App {
     }
 
     /**
-     * Returns true only if children contains a symbol that is equivalent to child.
+     * Returns true only if children contains a symbol that is equivalent to
+     * child.
+     * 
      * @param child
      * @param children
      * @return
      */
-    private static boolean listContainsEquivalentChild(final MibValueSymbol child,
-                                                       final MibValueSymbol[] children) {
+    private static boolean listContainsEquivalentChild(final MibValueSymbol child, final MibValueSymbol[] children) {
         LOG.debug("listContainsEquivalentChild {}", child.getName());
         for (final MibValueSymbol childToCompare : children) {
-            if ((child.isScalar() || child.isTableColumn()) && (childToCompare.isScalar() || childToCompare.isTableColumn())) {
+            if ((child.isScalar() || child.isTableColumn())
+                    && (childToCompare.isScalar() || childToCompare.isTableColumn())) {
                 LOG.debug("check scalar {}", childToCompare.getName());
                 if (areScalarsEquivalent(child, childToCompare)) {
                     return true;
@@ -417,7 +431,8 @@ public class    App {
         }
 
         if (symbol1.getChildCount() != symbol2.getChildCount()) {
-            LOG.debug("childcount {} {}", symbol1.getValue(), "" + symbol1.getChildCount() + " " + symbol2.getChildCount());
+            LOG.debug("childcount {} {}", symbol1.getValue(),
+                    "" + symbol1.getChildCount() + " " + symbol2.getChildCount());
             return false;
         }
 
@@ -436,13 +451,15 @@ public class    App {
 
     private static boolean areScalarsEquivalent(final MibValueSymbol symbol1, final MibValueSymbol symbol2) {
 
-        // Allow for a comparison with scalar/column and non-scalar/column (if an OID is reused).
+        // Allow for a comparison with scalar/column and non-scalar/column (if
+        // an OID is reused).
         if (!(symbol2.getType() instanceof SnmpObjectType)) {
             LOG.debug("Not type");
             return false;
         }
 
-        if (((SnmpObjectType) symbol1.getType()).getSyntax().getClass() != ((SnmpObjectType) symbol2.getType()).getSyntax().getClass()) {
+        if (((SnmpObjectType) symbol1.getType()).getSyntax().getClass() != ((SnmpObjectType) symbol2.getType())
+                .getSyntax().getClass()) {
             LOG.debug("type: {} {}", symbol1.getType(), symbol2.getType());
             return false;
         }
@@ -453,7 +470,8 @@ public class    App {
         }
 
         if (symbol1.getChildCount() != symbol2.getChildCount()) {
-            LOG.debug("childcount {} {}", symbol1.getValue(), "" + symbol1.getChildCount() + " " + symbol2.getChildCount());
+            LOG.debug("childcount {} {}", symbol1.getValue(),
+                    "" + symbol1.getChildCount() + " " + symbol2.getChildCount());
             return false;
         }
 
@@ -486,8 +504,7 @@ public class    App {
         }
     }
 
-    private static boolean loadMibs(final MibLoader loader,
-                                    final List<File> sourceFiles) {
+    private static boolean loadMibs(final MibLoader loader, final List<File> sourceFiles) {
 
         for (final File sourceName : sourceFiles) {
             if (!sourceName.isDirectory()) {
@@ -535,13 +552,13 @@ public class    App {
     }
 
     private static Map<String, List<MibValueSymbol>> getCompilableEntitySymbols(final MibLoader loader,
-                                                                                final MibInput source) {
+            final MibInput source) {
         final List<MibValueSymbol> rootSymbols = locateRootSymbols(loader, source.getRootObjects());
         return locateChildSymbols(rootSymbols, source.getExcludedRootObjects());
     }
 
     private static Map<String, List<MibValueSymbol>> locateChildSymbols(final List<MibValueSymbol> rootSymbols,
-                                                                        final Set<String> excludedRoots) {
+            final Set<String> excludedRoots) {
         final Map<String, List<MibValueSymbol>> rootSymbolMap = new HashMap<>();
         for (final MibValueSymbol rootSymbol : rootSymbols) {
             rootSymbolMap.put(rootSymbol.getValue().toString(), getChildEntities(rootSymbol, excludedRoots));
@@ -550,7 +567,7 @@ public class    App {
     }
 
     private static List<MibValueSymbol> getChildEntities(final MibValueSymbol rootSymbol,
-                                                         final Set<String> excludedRoots) {
+            final Set<String> excludedRoots) {
         LOG.debug(">>> getChildEntities:{}", rootSymbol);
         final List<MibValueSymbol> masterList = new ArrayList<>();
         if (rootSymbol.isTable()) {
@@ -562,7 +579,8 @@ public class    App {
         return masterList;
     }
 
-    private static void getChildEntities(final MibValueSymbol rootSymbol, final Set<String> excludedRoots, final List<MibValueSymbol> masterList) {
+    private static void getChildEntities(final MibValueSymbol rootSymbol, final Set<String> excludedRoots,
+            final List<MibValueSymbol> masterList) {
         for (final MibValueSymbol child : rootSymbol.getChildren()) {
 
             if (child != null && !isObjectExcluded((ObjectIdentifierValue) child.getValue(), excludedRoots)) {

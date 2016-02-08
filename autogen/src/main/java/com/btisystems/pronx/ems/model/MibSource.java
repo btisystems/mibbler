@@ -34,7 +34,7 @@ public class MibSource extends MibInput {
     /**
      * Name of the database schema to which entity classes will be saved.
      */
-    private  String schemaName;
+    private String schemaName;
 
     /**
      * The name of the common sets to be referenced.
@@ -106,4 +106,3 @@ public class MibSource extends MibInput {
     }
 
 }
-

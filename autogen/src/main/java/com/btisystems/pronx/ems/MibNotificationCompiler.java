@@ -44,9 +44,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Compiles the notifications from a set of loaded mibs.
- * The compiler generates a Notification Registry containing
- * a NotificationDescription for each notification.
+ * Compiles the notifications from a set of loaded mibs. The compiler generates
+ * a Notification Registry containing a NotificationDescription for each
+ * notification.
  */
 public class MibNotificationCompiler extends AbstractMibCompiler {
 
@@ -55,11 +55,12 @@ public class MibNotificationCompiler extends AbstractMibCompiler {
     /**
      * Class constructor
      *
-     * @param loader      the loader used to load the mibs containing the notifications to be compiled
-     * @param packageName the name of the package to which classes are to be added
+     * @param loader the loader used to load the mibs containing the
+     *            notifications to be compiled
+     * @param packageName the name of the package to which classes are to be
+     *            added
      */
-    public MibNotificationCompiler(final MibLoader loader,
-                       final String packageName) {
+    public MibNotificationCompiler(final MibLoader loader, final String packageName) {
         super(packageName);
         this.loader = loader;
     }
@@ -89,12 +90,14 @@ public class MibNotificationCompiler extends AbstractMibCompiler {
         return generateNotificationRegistry(notifications);
     }
 
-    // Generate class with maps, mapping OIDs and names to notification descriptions.
-    private  NotificationMeta generateNotificationRegistry(final List<MibValueSymbol> notifications) {
+    // Generate class with maps, mapping OIDs and names to notification
+    // descriptions.
+    private NotificationMeta generateNotificationRegistry(final List<MibValueSymbol> notifications) {
 
         final NotificationMeta notificationMeta = new NotificationMeta();
 
-        final Map<ObjectIdentifierValue, FieldDescription> fieldMap = createFieldDescriptions(notificationMeta, notifications);
+        final Map<ObjectIdentifierValue, FieldDescription> fieldMap = createFieldDescriptions(notificationMeta,
+                notifications);
 
         final NotificationList notificationList = new NotificationList();
         notificationMeta.setNotificationList(notificationList);
@@ -116,8 +119,8 @@ public class MibNotificationCompiler extends AbstractMibCompiler {
         return notificationMeta;
     }
 
-    private Map<ObjectIdentifierValue, FieldDescription> createFieldDescriptions(final NotificationMeta notificationMeta,
-                                                                          final List<MibValueSymbol> notifications) {
+    private Map<ObjectIdentifierValue, FieldDescription> createFieldDescriptions(
+            final NotificationMeta notificationMeta, final List<MibValueSymbol> notifications) {
         final FieldList fieldList = new FieldList();
         notificationMeta.setFieldList(fieldList);
 
@@ -153,10 +156,7 @@ public class MibNotificationCompiler extends AbstractMibCompiler {
                 description = ((SnmpType) notificationField.getType()).getDescription();
             }
 
-            return new FieldDescription()
-                    .withDescription(description)
-                    .withName(fieldName)
-                    .withOid(oid)
+            return new FieldDescription().withDescription(description).withName(fieldName).withOid(oid)
                     .withType(fieldType);
         }
         return null;

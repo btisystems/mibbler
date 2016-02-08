@@ -102,18 +102,20 @@ public abstract class AbstractMibCompiler {
     private static final int MAXIMUM_OCTET_STRING_LENGTH_DISPLAY_FACTOR_APPLIES = 16;
 
     /**
-     * The constant RESERVED_WORD_SET. See http://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html, using set to confirm uniqueness
+     * The constant RESERVED_WORD_SET. See
+     * http://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html,
+     * using set to confirm uniqueness
      */
-    protected static final Set<String> RESERVED_WORD_SET = new HashSet<>(Arrays.asList("abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const",
-            "continue", "default", "do", "double", "else", "enum", "extends", "final", "finally", "float",
-            "for", "goto", "if", "implements", "import", "instanceof", "int", "interface", "long", "native",
-            "new", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super",
-            "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void", "volatile", "while"));
+    protected static final Set<String> RESERVED_WORD_SET = new HashSet<>(Arrays.asList("abstract", "assert", "boolean",
+            "break", "byte", "case", "catch", "char", "class", "const", "continue", "default", "do", "double", "else",
+            "enum", "extends", "final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof",
+            "int", "interface", "long", "native", "new", "package", "private", "protected", "public", "return",
+            "short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient",
+            "try", "void", "volatile", "while"));
     private static final String UNDERSCORE = "_";
     public static final String TO_STRING = "toString";
     public static final String APPEND = "append";
     public static final String CLONE = "clone";
-
 
     /**
      * The Code model.
@@ -138,7 +140,7 @@ public abstract class AbstractMibCompiler {
      * Create class j defined class.
      *
      * @param packageName the package name
-     * @param name        the name
+     * @param name the name
      * @return the j defined class
      */
     protected final JDefinedClass createClass(final String packageName, final String name) {
@@ -149,7 +151,7 @@ public abstract class AbstractMibCompiler {
      * Create interface j defined class.
      *
      * @param packageName the package name
-     * @param name        the name
+     * @param name the name
      * @return the j defined class
      */
     protected final JDefinedClass createInterface(final String packageName, final String name) {
@@ -160,8 +162,8 @@ public abstract class AbstractMibCompiler {
      * Create class j defined class.
      *
      * @param packageName the package name
-     * @param name        the name
-     * @param type        the type
+     * @param name the name
+     * @param type the type
      * @return the j defined class
      */
     protected final JDefinedClass createClass(final String packageName, final String name, final ClassType type) {
@@ -178,7 +180,7 @@ public abstract class AbstractMibCompiler {
      * Gets full class name.
      *
      * @param packageName the package name
-     * @param name        the name
+     * @param name the name
      * @return the full class name
      */
     protected final String getFullClassName(final String packageName, final String name) {
@@ -210,7 +212,7 @@ public abstract class AbstractMibCompiler {
      * Gets symbol by oid.
      *
      * @param rootSymbol the root symbol
-     * @param value      the value
+     * @param value the value
      * @return the symbol by oid
      */
     protected final MibValueSymbol getSymbolByOid(final MibValueSymbol rootSymbol, final ObjectIdentifierValue value) {
@@ -319,6 +321,7 @@ public abstract class AbstractMibCompiler {
 
     /**
      * Determine the java type corresponding to a MibType.
+     * 
      * @param type Java Type
      * @return
      */
@@ -329,7 +332,7 @@ public abstract class AbstractMibCompiler {
             // Using approach from SnmpManager.java at
             // http://www.koders.com/java/fidF816DD93365720DD25C4DD82784EC1FCB8B4582A.aspx?s=227
             if (type.hasTag(MibTypeTag.APPLICATION_CATEGORY, SIX)) {
-                //  Counter64
+                // Counter64
                 result = codeModel.LONG;
             } else {
                 result = codeModel.INT;
@@ -358,14 +361,13 @@ public abstract class AbstractMibCompiler {
      */
     protected final void addToStringMethod(final JDefinedClass definedClass) {
         // Generate code of the form:
-        //     return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
-        //        append("field1", field1).
-        //        ...
-        //        append("fieldn", fieldn).
-        //        toString();
+        // return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
+        // append("field1", field1).
+        // ...
+        // append("fieldn", fieldn).
+        // toString();
         final JMethod method = definedClass.method(JMod.PUBLIC, codeModel.ref(String.class), TO_STRING);
-        JInvocation newInvocation = JExpr._new(codeModel.ref(ToStringBuilder.class))
-                .arg(JExpr._this())
+        JInvocation newInvocation = JExpr._new(codeModel.ref(ToStringBuilder.class)).arg(JExpr._this())
                 .arg(codeModel.ref(ToStringStyle.class).staticRef("MULTI_LINE_STYLE"));
 
         for (final Entry<String, JFieldVar> varEntry : definedClass.fields().entrySet()) {
@@ -385,11 +387,11 @@ public abstract class AbstractMibCompiler {
      */
     protected final void addHashCodeMethod(final JDefinedClass definedClass) {
         // Generate code of the form:
-        //     return new HashCodeBuilder().
-        //        append(field1).
-        //        ...
-        //        append(fieldn).
-        //        toHashCode();
+        // return new HashCodeBuilder().
+        // append(field1).
+        // ...
+        // append(fieldn).
+        // toHashCode();
         final JMethod method = definedClass.method(JMod.PUBLIC, codeModel.INT, "hashCode");
         JInvocation newInvocation = JExpr._new(codeModel.ref(HashCodeBuilder.class));
 
@@ -410,19 +412,19 @@ public abstract class AbstractMibCompiler {
      */
     protected final void addEqualsMethod(final JDefinedClass definedClass) {
         // Generate code of the form:
-        //        public boolean equals(Object obj) {
-        //            if (obj == null) { return false; }
-        //            if (obj == this) { return true; }
-        //            if (obj.getClass() != getClass()) {
-        //              return false;
-        //            }
-        //            ThisClass rhs = (ThisClass) obj;
-        //            return new EqualsBuilder()
-        //                          .append(field1, rhs.field1)
-        //                          ...
-        //                          .append(fieldn, rhs.fieldn)
-        //                          .isEquals();
-        //           }
+        // public boolean equals(Object obj) {
+        // if (obj == null) { return false; }
+        // if (obj == this) { return true; }
+        // if (obj.getClass() != getClass()) {
+        // return false;
+        // }
+        // ThisClass rhs = (ThisClass) obj;
+        // return new EqualsBuilder()
+        // .append(field1, rhs.field1)
+        // ...
+        // .append(fieldn, rhs.fieldn)
+        // .isEquals();
+        // }
         final JMethod method = definedClass.method(JMod.PUBLIC, codeModel.BOOLEAN, "equals");
         final JVar objVar = method.param(codeModel.ref(Object.class), "obj");
         final JBlock body = method.body();
@@ -460,16 +462,16 @@ public abstract class AbstractMibCompiler {
         final boolean isRootClass = definedClass.name().equals(GeneratedIdentifiers.ROOT_CLASS_NAME);
 
         // Generate code of the form:
-        //   public XXX clone() {
-        //      XXX copy = new XXX();
-        //      copy.field1 = field1;
-        //      copy.field2 = field2;
-        //      // For a table:
-        //      for (Entry<String, XXXEntry> entry : map.entrySet()) {
-        //          copy.map.put(entry.getKey(), entry.getValue().clone());
-        //      }
-        //      return copy;
-        //  }
+        // public XXX clone() {
+        // XXX copy = new XXX();
+        // copy.field1 = field1;
+        // copy.field2 = field2;
+        // // For a table:
+        // for (Entry<String, XXXEntry> entry : map.entrySet()) {
+        // copy.map.put(entry.getKey(), entry.getValue().clone());
+        // }
+        // return copy;
+        // }
 
         final JMethod method = definedClass.method(JMod.PUBLIC, definedClass, CLONE);
 
@@ -481,18 +483,19 @@ public abstract class AbstractMibCompiler {
 
                 if (isTableEntryField(field.getValue())) {
                     final JForEach forEach = method.body().forEach(getEntryType((JClass) field.getValue().type()),
-                            "_entry",
-                            field.getValue().invoke("entrySet"));
+                            "_entry", field.getValue().invoke("entrySet"));
                     final JVar entryVar = forEach.var();
-                    forEach.body().invoke(clonedObject, "setEntry")
-                            .arg(entryVar.invoke("getKey"))
+                    forEach.body().invoke(clonedObject, "setEntry").arg(entryVar.invoke("getKey"))
                             .arg(entryVar.invoke("getValue").invoke(CLONE));
                 } else {
                     if (!isRootClass) {
                         method.body().assign(clonedObject.ref(field.getValue()), field.getValue());
                     } else {
-                        // For the root object, assign the entity if it's not null.
-                        // TODO SJ Change code generation to use setObject on the AbstractRootEntity (to ensure parent entity is set).
+                        // For the root object, assign the entity if it's not
+                        // null.
+                        // TODO SJ Change code generation to use setObject on
+                        // the AbstractRootEntity (to ensure parent entity is
+                        // set).
                         method.body()._if(field.getValue().ne(JExpr._null()))._then()
                                 .assign(clonedObject.ref(field.getValue()), field.getValue().invoke(CLONE))
                                 .invoke(clonedObject.ref(field.getValue()), "set_ParentEntity").arg(clonedObject);
@@ -514,7 +517,8 @@ public abstract class AbstractMibCompiler {
     }
 
     /**
-     * Returns type for Entry<String, XXX> where XXX is the type of the table entry.
+     * Returns type for Entry<String, XXX> where XXX is the type of the table
+     * entry.
      *
      * @param mapType the map type
      * @return the entry type
@@ -530,31 +534,30 @@ public abstract class AbstractMibCompiler {
      * Generate get and set methods for named field of specified type.
      *
      * @param definedClass the defined class
-     * @param child        the child
-     * @param type         the type
-     * @param field        the field
+     * @param child the child
+     * @param type the type
+     * @param field the field
      */
-    protected final void generateAccessors(final JDefinedClass definedClass, final MibValueSymbol child, final JType type, final String field) {
+    protected final void generateAccessors(final JDefinedClass definedClass, final MibValueSymbol child,
+            final JType type, final String field) {
         generateGetAccessor(child, definedClass, type, field);
         if (!child.isTableRow()) {
-            generateSetAccessor(definedClass, type, field, getMibIndex(child), !(isSimpleType(child) || child.isTableRow()));
+            generateSetAccessor(definedClass, type, field, getMibIndex(child),
+                    !(isSimpleType(child) || child.isTableRow()));
         }
     }
 
     /**
      * Generate set accessor.
      *
-     * @param definedClass             the defined class
-     * @param type                     the type
-     * @param field                    the field
-     * @param fieldId                  the field id
+     * @param definedClass the defined class
+     * @param type the type
+     * @param field the field
+     * @param fieldId the field id
      * @param shouldInvokeReplaceChild the should invoke replace child
      */
-    protected final void generateSetAccessor(final JDefinedClass definedClass,
-                                       final JType type,
-                                       final String field,
-                                       final int fieldId,
-                                       final boolean shouldInvokeReplaceChild) {
+    protected final void generateSetAccessor(final JDefinedClass definedClass, final JType type, final String field,
+            final int fieldId, final boolean shouldInvokeReplaceChild) {
         final JMethod setMethod = definedClass.method(JMod.PUBLIC, codeModel.VOID, getSetterName(field));
         setMethod.param(type, field);
 
@@ -573,12 +576,13 @@ public abstract class AbstractMibCompiler {
     /**
      * Generate get accessor.
      *
-     * @param child        the child
+     * @param child the child
      * @param definedClass the defined class
-     * @param type         the type
-     * @param field        the field
+     * @param type the type
+     * @param field the field
      */
-    protected final void generateGetAccessor(final MibValueSymbol child, final JDefinedClass definedClass, final JType type, final String field) {
+    protected final void generateGetAccessor(final MibValueSymbol child, final JDefinedClass definedClass,
+            final JType type, final String field) {
         final JMethod getMethod = definedClass.method(JMod.PUBLIC, type, getGetterName(field));
 
         if (child != null) {
@@ -597,7 +601,8 @@ public abstract class AbstractMibCompiler {
                     defaultReturnExpression = JExpr.lit(defaultValue.toString());
                 }
                 if (defaultReturnExpression != null) {
-                    getMethod.body()._if(JExpr.refthis(field).eq(JExpr._null()))._then()._return(defaultReturnExpression);
+                    getMethod.body()._if(JExpr.refthis(field).eq(JExpr._null()))._then()
+                            ._return(defaultReturnExpression);
                     generateIsDefinedAccessor(definedClass, field);
                 }
             } else {
@@ -630,8 +635,9 @@ public abstract class AbstractMibCompiler {
     }
 
     /**
-     * Establish Java field type that corresponds to a MibValueSymbol, creating a class, if necessary.
-     * Null is returned if the field is an object that has no variables in its tree.
+     * Establish Java field type that corresponds to a MibValueSymbol, creating
+     * a class, if necessary. Null is returned if the field is an object that
+     * has no variables in its tree.
      *
      * @param child the child
      * @return the java type of field
@@ -700,7 +706,7 @@ public abstract class AbstractMibCompiler {
      * Generate package name for a child of a parent package.
      *
      * @param packageName the package name
-     * @param name        the name
+     * @param name the name
      * @return the string
      */
     protected final String generateChildPackageName(final String packageName, final String name) {
@@ -732,7 +738,8 @@ public abstract class AbstractMibCompiler {
     }
 
     /**
-     * Map any characters in a Mib name that are not valid in a class/package name.
+     * Map any characters in a Mib name that are not valid in a class/package
+     * name.
      *
      * @param name the name
      * @return the mapped name
@@ -767,11 +774,12 @@ public abstract class AbstractMibCompiler {
     /**
      * Generate class metadata.
      *
-     * @param rootSymbol   the root symbol
+     * @param rootSymbol the root symbol
      * @param definedClass the defined class
-     * @param children     the children
+     * @param children the children
      */
-    protected final void generateClassMetadata(final MibValueSymbol rootSymbol, final JDefinedClass definedClass, final List<MibValueSymbol> children) {
+    protected final void generateClassMetadata(final MibValueSymbol rootSymbol, final JDefinedClass definedClass,
+            final List<MibValueSymbol> children) {
         createDeviceEntityDescription(rootSymbol, definedClass, children);
         generateGetDescriptionMethod(definedClass);
     }
@@ -786,7 +794,7 @@ public abstract class AbstractMibCompiler {
         final JMethod getMethod = definedClass.method(JMod.PUBLIC, typeVar, "get_Description");
 
         // Generate code of the form:
-        //     return _entityDescription;
+        // return _entityDescription;
         final JVar mapVar = definedClass.fields().get("_entityDescription");
         getMethod.body()._return(mapVar);
     }
@@ -845,15 +853,17 @@ public abstract class AbstractMibCompiler {
     /**
      * Create device entity description.
      *
-     * @param rootSymbol   the root symbol
+     * @param rootSymbol the root symbol
      * @param definedClass the defined class
-     * @param children     the children
+     * @param children the children
      */
-    protected final void createDeviceEntityDescription(final MibValueSymbol rootSymbol, final JDefinedClass definedClass, final List<MibValueSymbol> children) {
+    protected final void createDeviceEntityDescription(final MibValueSymbol rootSymbol,
+            final JDefinedClass definedClass, final List<MibValueSymbol> children) {
         LOG.debug("Creating meta data for {} fields.", children.size());
         // Create description, initialised by call to static function.
         final JClass typeVar = codeModel.ref(DeviceEntityDescription.class);
-        final JFieldVar descriptionVar = definedClass.field(JMod.PRIVATE | JMod.STATIC | JMod.FINAL, typeVar, "_entityDescription");
+        final JFieldVar descriptionVar = definedClass.field(JMod.PRIVATE | JMod.STATIC | JMod.FINAL, typeVar,
+                "_entityDescription");
 
         final JMethod initMethod = definedClass.method(JMod.STATIC | JMod.PRIVATE, typeVar, "createEntityDescription");
         descriptionVar.init(JExpr.invoke(initMethod));
@@ -867,24 +877,26 @@ public abstract class AbstractMibCompiler {
         // Populate the description with field details.
         for (final MibValueSymbol child : children) {
             // For each child, generate a statement of the form:
-            //     description.addField(new FieldDescription(....)
+            // description.addField(new FieldDescription(....)
             final JInvocation addInvocation = initMethod.body().invoke(localVar, "addField");
 
             final int fieldId = getMibIndex(child);
             final String fieldName = getMappedName(child.getName());
             final FieldType fieldType = getMappedFieldType(child);
-            final int maximumLength = (fieldType == FieldType.STRING) ? getMaximumLengthForStringField(child.getType()) : -1;
-            addInvocation.arg(JExpr._new(codeModel.ref(FieldDescription.class)).arg(JExpr.lit(fieldId)).arg(JExpr.lit(fieldName))
-                    .arg(codeModel.ref(FieldType.class).staticRef(fieldType.name())).arg(JExpr.lit(maximumLength)));
+            final int maximumLength = (fieldType == FieldType.STRING) ? getMaximumLengthForStringField(child.getType())
+                    : -1;
+            addInvocation.arg(JExpr._new(codeModel.ref(FieldDescription.class)).arg(JExpr.lit(fieldId))
+                    .arg(JExpr.lit(fieldName)).arg(codeModel.ref(FieldType.class).staticRef(fieldType.name()))
+                    .arg(JExpr.lit(maximumLength)));
         }
         // Return the description.
         initMethod.body()._return(localVar);
     }
 
-
     /**
-     * Return maximum length of string type field, or DEFAULT_STRING_COLUMN_LENGTH if there is no explicit maximum.
-     * In fact, at present it only inspects OCTET STRINGs for size constraints.
+     * Return maximum length of string type field, or
+     * DEFAULT_STRING_COLUMN_LENGTH if there is no explicit maximum. In fact, at
+     * present it only inspects OCTET STRINGs for size constraints.
      *
      * @param type the type
      * @return the maximum length for string field
@@ -948,17 +960,21 @@ public abstract class AbstractMibCompiler {
         LOG.debug("displayHint = {} maxSize = {}", displayHint, maximumOctets);
         if (displayHint != null) {
 
-            // If the maximum size of the field in octets exceeds the number of octets consumed by
-            // the display hint (excluding the case where it's repeated an unknown number of times),
-            // then assume that the output width will be repeated as many times as the number of octets allows.
+            // If the maximum size of the field in octets exceeds the number of
+            // octets consumed by
+            // the display hint (excluding the case where it's repeated an
+            // unknown number of times),
+            // then assume that the output width will be repeated as many times
+            // as the number of octets allows.
             // For example, given:
-            //     SIZE(255)
+            // SIZE(255)
             // and
-            //     DISPLAY-HINT "1x:"
+            // DISPLAY-HINT "1x:"
             // then:
             // - outputWidth will be 3 (2 hex digits & 1 colon)
             // - octetsConsumed will be 1
-            // so, the maximum output width is determined to be 3 * (255 / 1), i.e. 765.
+            // so, the maximum output width is determined to be 3 * (255 / 1),
+            // i.e. 765.
 
             if (!displayHint.isRepeated && maximumOctets > displayHint.octetsConsumed) {
                 maximumFieldWidth = displayHint.outputWidth * (maximumOctets / displayHint.octetsConsumed);
@@ -966,10 +982,10 @@ public abstract class AbstractMibCompiler {
                 maximumFieldWidth = displayHint.outputWidth;
             }
         } else {
-            // For shorter fields without a DISPLAY HINT, give them some extra space for formatting.
-            maximumFieldWidth = maximumOctets <= MAXIMUM_OCTET_STRING_LENGTH_DISPLAY_FACTOR_APPLIES
-                    ? maximumOctets * OCTET_STRING_DISPLAY_FACTOR
-                    : maximumOctets;
+            // For shorter fields without a DISPLAY HINT, give them some extra
+            // space for formatting.
+            maximumFieldWidth = maximumOctets <= MAXIMUM_OCTET_STRING_LENGTH_DISPLAY_FACTOR_APPLIES ? maximumOctets
+                    * OCTET_STRING_DISPLAY_FACTOR : maximumOctets;
         }
         return maximumFieldWidth;
     }

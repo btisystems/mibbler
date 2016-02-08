@@ -29,11 +29,11 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * Represents a group of mib source sets, relating to a single device type.
  */
-public class DeviceGroup  {
+public class DeviceGroup {
     /**
      * The sets of mib sources for different device variants.
      */
-    private  List<MibSource> sourceMibs;
+    private List<MibSource> sourceMibs;
 
     /**
      * Name used to identify the group.
@@ -43,12 +43,13 @@ public class DeviceGroup  {
     /**
      * The name of the java package to which generated classes are to belong.
      */
-    private  String packageName;
+    private String packageName;
 
     /**
-     * The name of the package used to contain interfaces (added to packageName).
+     * The name of the package used to contain interfaces (added to
+     * packageName).
      */
-    private  String interfacePackageName;
+    private String interfacePackageName;
 
     /**
      * Gets source mibs.
@@ -126,6 +127,4 @@ public class DeviceGroup  {
         return interfacePackageName;
     }
 
-
 }
-

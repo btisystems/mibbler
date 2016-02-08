@@ -14,10 +14,6 @@ public class MibSourceTest {
 
     @Test
     public void shouldContainBeanMethods() {
-        assertThat(MibSource.class,
-                allOf(
-                        hasValidGettersAndSetters()
-                )
-        );
+        assertThat(MibSource.class, allOf(hasValidGettersAndSetters()));
     }
 }

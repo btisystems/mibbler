@@ -14,10 +14,6 @@ public class DeviceGroupTest {
 
     @Test
     public void shouldContainBeanMethods() {
-        assertThat(DeviceGroup.class,
-                allOf(
-                        hasValidGettersAndSetters()
-                )
-        );
+        assertThat(DeviceGroup.class, allOf(hasValidGettersAndSetters()));
     }
 }

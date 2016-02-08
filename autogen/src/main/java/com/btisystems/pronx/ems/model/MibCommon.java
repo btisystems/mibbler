@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class MibCommon extends MibInput {
 
-
     private String name;
 
     public MibCommon() {
@@ -55,4 +54,3 @@ public class MibCommon extends MibInput {
     }
 
 }
-

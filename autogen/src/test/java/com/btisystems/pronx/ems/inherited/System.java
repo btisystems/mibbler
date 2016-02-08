@@ -1,6 +1,5 @@
 package com.btisystems.pronx.ems.inherited;
 
-
 import java.io.Serializable;
 import com.btisystems.pronx.ems.core.model.AbstractRootEntity;
 import com.btisystems.pronx.ems.core.model.DeviceEntity;
@@ -13,10 +12,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
 
-public class System
-        extends DeviceEntity
-        implements Serializable, IVariableBindingSetter
-{
+public class System extends DeviceEntity implements Serializable, IVariableBindingSetter {
 
     private String sysDescr;
     private String sysObjectID;
@@ -114,39 +110,43 @@ public class System
 
     public void set(VariableBinding binding) {
         switch (binding.getOid().get(7)) {
-            case  1 :
-                setSysDescr(binding.getVariable().toString());
-                break;
-            case  2 :
-                setSysObjectID(binding.getVariable().toString());
-                break;
-            case  3 :
-                setSysUpTime(binding.getVariable().toInt());
-                break;
-            case  4 :
-                setSysContact(binding.getVariable().toString());
-                break;
-            case  5 :
-                setSysName(binding.getVariable().toString());
-                break;
-            case  6 :
-                setSysLocation(binding.getVariable().toString());
-                break;
-            case  7 :
-                setSysServices(binding.getVariable().toInt());
-                break;
-            case  8 :
-                setSysORLastChange(binding.getVariable().toInt());
-                break;
+        case 1:
+            setSysDescr(binding.getVariable().toString());
+            break;
+        case 2:
+            setSysObjectID(binding.getVariable().toString());
+            break;
+        case 3:
+            setSysUpTime(binding.getVariable().toInt());
+            break;
+        case 4:
+            setSysContact(binding.getVariable().toString());
+            break;
+        case 5:
+            setSysName(binding.getVariable().toString());
+            break;
+        case 6:
+            setSysLocation(binding.getVariable().toString());
+            break;
+        case 7:
+            setSysServices(binding.getVariable().toInt());
+            break;
+        case 8:
+            setSysORLastChange(binding.getVariable().toInt());
+            break;
         }
     }
 
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("sysDescr", sysDescr).append("sysObjectID", sysObjectID).append("sysUpTime", sysUpTime).append("sysContact", sysContact).append("sysName", sysName).append("sysLocation", sysLocation).append("sysServices", sysServices).append("sysORLastChange", sysORLastChange).toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("sysDescr", sysDescr)
+                .append("sysObjectID", sysObjectID).append("sysUpTime", sysUpTime).append("sysContact", sysContact)
+                .append("sysName", sysName).append("sysLocation", sysLocation).append("sysServices", sysServices)
+                .append("sysORLastChange", sysORLastChange).toString();
     }
 
     public int hashCode() {
-        return new HashCodeBuilder().append(sysDescr).append(sysObjectID).append(sysUpTime).append(sysContact).append(sysName).append(sysLocation).append(sysServices).append(sysORLastChange).toHashCode();
+        return new HashCodeBuilder().append(sysDescr).append(sysObjectID).append(sysUpTime).append(sysContact)
+                .append(sysName).append(sysLocation).append(sysServices).append(sysORLastChange).toHashCode();
     }
 
     public boolean equals(Object obj) {
@@ -156,11 +156,14 @@ public class System
         if (obj == this) {
             return true;
         }
-        if (obj.getClass()!= this.getClass()) {
+        if (obj.getClass() != this.getClass()) {
             return false;
         }
         System rhs = ((System) obj);
-        return new EqualsBuilder().append(sysDescr, rhs.sysDescr).append(sysObjectID, rhs.sysObjectID).append(sysUpTime, rhs.sysUpTime).append(sysContact, rhs.sysContact).append(sysName, rhs.sysName).append(sysLocation, rhs.sysLocation).append(sysServices, rhs.sysServices).append(sysORLastChange, rhs.sysORLastChange).isEquals();
+        return new EqualsBuilder().append(sysDescr, rhs.sysDescr).append(sysObjectID, rhs.sysObjectID)
+                .append(sysUpTime, rhs.sysUpTime).append(sysContact, rhs.sysContact).append(sysName, rhs.sysName)
+                .append(sysLocation, rhs.sysLocation).append(sysServices, rhs.sysServices)
+                .append(sysORLastChange, rhs.sysORLastChange).isEquals();
     }
 
     public System clone() {
@@ -182,14 +185,22 @@ public class System
 
     private static DeviceEntityDescription createEntityDescription() {
         DeviceEntityDescription description = new DeviceEntityDescription(new OID("1.3.6.1.2.1.1"));
-        description.addField(new DeviceEntityDescription.FieldDescription(1, "sysDescr", DeviceEntityDescription.FieldType.STRING, 255));
-        description.addField(new DeviceEntityDescription.FieldDescription(2, "sysObjectID", DeviceEntityDescription.FieldType.OID, -1));
-        description.addField(new DeviceEntityDescription.FieldDescription(3, "sysUpTime", DeviceEntityDescription.FieldType.INTEGER, -1));
-        description.addField(new DeviceEntityDescription.FieldDescription(4, "sysContact", DeviceEntityDescription.FieldType.STRING, 255));
-        description.addField(new DeviceEntityDescription.FieldDescription(5, "sysName", DeviceEntityDescription.FieldType.STRING, 255));
-        description.addField(new DeviceEntityDescription.FieldDescription(6, "sysLocation", DeviceEntityDescription.FieldType.STRING, 255));
-        description.addField(new DeviceEntityDescription.FieldDescription(7, "sysServices", DeviceEntityDescription.FieldType.INTEGER, -1));
-        description.addField(new DeviceEntityDescription.FieldDescription(8, "sysORLastChange", DeviceEntityDescription.FieldType.INTEGER, -1));
+        description.addField(new DeviceEntityDescription.FieldDescription(1, "sysDescr",
+                DeviceEntityDescription.FieldType.STRING, 255));
+        description.addField(new DeviceEntityDescription.FieldDescription(2, "sysObjectID",
+                DeviceEntityDescription.FieldType.OID, -1));
+        description.addField(new DeviceEntityDescription.FieldDescription(3, "sysUpTime",
+                DeviceEntityDescription.FieldType.INTEGER, -1));
+        description.addField(new DeviceEntityDescription.FieldDescription(4, "sysContact",
+                DeviceEntityDescription.FieldType.STRING, 255));
+        description.addField(new DeviceEntityDescription.FieldDescription(5, "sysName",
+                DeviceEntityDescription.FieldType.STRING, 255));
+        description.addField(new DeviceEntityDescription.FieldDescription(6, "sysLocation",
+                DeviceEntityDescription.FieldType.STRING, 255));
+        description.addField(new DeviceEntityDescription.FieldDescription(7, "sysServices",
+                DeviceEntityDescription.FieldType.INTEGER, -1));
+        description.addField(new DeviceEntityDescription.FieldDescription(8, "sysORLastChange",
+                DeviceEntityDescription.FieldType.INTEGER, -1));
         return description;
     }
 

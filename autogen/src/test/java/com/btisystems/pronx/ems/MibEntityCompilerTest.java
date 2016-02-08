@@ -37,12 +37,14 @@ public class MibEntityCompilerTest {
     private Map<String, List<MibValueSymbol>> symbolMap = new HashMap<>();
     private MibEntityCompiler compiler;
     private final JCodeModel codeModel = new JCodeModel();
-    @Mock private MibValueSymbol mockSymbol;
-    @Mock private SnmpObjectType mockSnmpObjectType;
-    
+    @Mock
+    private MibValueSymbol mockSymbol;
+    @Mock
+    private SnmpObjectType mockSnmpObjectType;
+
     public MibEntityCompilerTest() {
     }
-    
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -55,13 +57,13 @@ public class MibEntityCompilerTest {
         final JDefinedClass jdefined = compiler.createInterface("foo.bar", "TestInterface");
         assertEquals("foo.bar.TestInterface", jdefined.fullName());
     }
-    
+
     @Test
     public void shouldCreateClass() {
         final JDefinedClass jdefined = compiler.createClass("foo.bar", "TestClass", ClassType.CLASS);
         assertEquals("foo.bar.TestClass", jdefined.fullName());
     }
-    
+
     @Test
     public void shouldCreateUtilityMethods() {
         final JDefinedClass jdefined = compiler.createClass("foo.bar", "TestClass", ClassType.CLASS);
@@ -70,10 +72,10 @@ public class MibEntityCompilerTest {
         compiler.addEqualsMethod(jdefined);
         compiler.addHashCodeMethod(jdefined);
         compiler.addToStringMethod(jdefined);
-        
-        assertEquals(4, jdefined.methods().size()); 
+
+        assertEquals(4, jdefined.methods().size());
     }
-    
+
     @Test
     public void shouldCreateAccessors() {
         Mockito.when(mockSymbol.getType()).thenReturn(mockSnmpObjectType);
@@ -82,7 +84,7 @@ public class MibEntityCompilerTest {
         final JDefinedClass jdefined = compiler.createClass("foo.bar", "TestClass", ClassType.CLASS);
         final JFieldVar field = jdefined.field(JMod.PUBLIC, Integer.class, "testInteger");
         compiler.generateAccessors(jdefined, mockSymbol, field.type(), "testInteger");
-        
-        assertEquals(2, jdefined.methods().size()); 
+
+        assertEquals(2, jdefined.methods().size());
     }
 }

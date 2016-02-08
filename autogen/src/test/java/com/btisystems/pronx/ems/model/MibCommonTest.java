@@ -7,7 +7,6 @@ import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetter
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.junit.Assert.*;
 
-
 public class MibCommonTest {
     @Before
     public void setUp() {
@@ -15,10 +14,6 @@ public class MibCommonTest {
 
     @Test
     public void shouldContainBeanMethods() {
-        assertThat(MibCommon.class,
-                allOf(
-                        hasValidGettersAndSetters()
-                )
-        );
+        assertThat(MibCommon.class, allOf(hasValidGettersAndSetters()));
     }
 }
