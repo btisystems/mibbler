@@ -32,3 +32,4 @@ mibs/**/src/main/java
 helloworld/src/main/java
 **/META-INF
 
+autogen/src/test/generated
