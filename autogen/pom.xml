@@ -193,6 +193,26 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.11</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <header>quality/header.txt</header>
+                    <includes>
+                        <include>src/main/java/**/*.java</include>
+                        <include>src/test/java/**/*.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19</version>

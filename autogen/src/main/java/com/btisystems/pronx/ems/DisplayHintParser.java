@@ -1,23 +1,19 @@
 /**
+ *                     GNU GENERAL PUBLIC LICENSE
+ *                        Version 3, 29 June 2007
  *
- * Copyright (C) BTI Systems Inc. 2001-2010. All Rights Reserved.
+ *  Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ *  Everyone is permitted to copy and distribute verbatim copies
+ *  of this license document, but changing it is not allowed.
  *
- * The information contained herein is the property of BTI Systems
- * Inc. and is strictly confidential. Except as expressly authorized
- * in writing by BTI Systems Inc., the holder shall keep all
- * information contained herein confidential, shall disclose the
- * information only to its employees with a need to know, and shall
- * protect the information, in whole or in part, from disclosure and
- * dissemination to third parties with the same degree of care it uses
- * to protect its own confidential information, but with no less than
- * reasonable care. Except as expressly authorized in writing by BTI
- * Systems Inc., the holder is granted no rights to use the
- * information contained herein.
+ *  This program is free software: you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * Unpublished. All rights reserved under the copyright laws of
- * Canada.
- *
- * $Id$
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 package com.btisystems.pronx.ems;
 
