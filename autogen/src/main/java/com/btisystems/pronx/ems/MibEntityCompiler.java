@@ -69,6 +69,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -353,7 +355,14 @@ public class MibEntityCompiler extends AbstractMibCompiler {
         final JMethod method = rootClass.method(JMod.PUBLIC, codeModel._ref(DeviceEntity[].class), "getRoots");
 
         final JArray objectArray = JExpr.newArray(codeModel._ref(DeviceEntity.class));
-        for (final Entry<String, JFieldVar> entry : oidRootFieldMap.entrySet()) {
+        List<Entry<String, JFieldVar>> entries = new ArrayList<>(oidRootFieldMap.entrySet());
+        Collections.sort(entries, new Comparator<Entry<String, JFieldVar>>() {
+            @Override
+            public int compare(Entry<String, JFieldVar> o1, Entry<String, JFieldVar> o2) {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
+        for (final Entry<String, JFieldVar> entry : entries) {
             objectArray.add(entry.getValue());
         }
 
