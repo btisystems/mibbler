@@ -30,5 +30,7 @@ samples/bti7000/src/main/java
 
 mibs/**/src/main/java
 helloworld/src/main/java
+
+autogen/src/test/generated
 mibs/**/META-INF
 helloworld/**/META-INF
