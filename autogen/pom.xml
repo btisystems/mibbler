@@ -189,7 +189,7 @@
                     <compilerSource>${java.version}</compilerSource>
                     <compilerCompliance>${java.version}</compilerCompliance>
                     <compilerTargetPlatform>${java.version}</compilerTargetPlatform>
-                    <configFile>quality/bti-formatter.xml</configFile>
+                    <configFile>quality/formatter.xml</configFile>
                 </configuration>
             </plugin>
             <plugin>
