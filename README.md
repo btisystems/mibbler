@@ -16,6 +16,7 @@ used at build time.  The command used to do this is outlined below.
      $ mvn deploy:deploy-file -Durl=file:./repo -Dfile=mibble-parser-2.9.3.jar -DgroupId=net.percederberg -DartifactId=mibble-parser -Dpackaging=jar -Dversion=2.9.3
      $ mvn deploy:deploy-file -Durl=file:./repo -Dfile=mibble-mibs-2.9.3.jar -DgroupId=net.percederberg -DartifactId=mibble-mibs -Dpackaging=jar -Dversion=2.9.3
 
+For those wishing to download the full version of the software its available [here](http://www.mibble.org/download/stable/index.html).
 
 ## Getting Started
 The project includes an Hello World, this is located [here](./helloworld).  Third parties wishing to generate jars from 
